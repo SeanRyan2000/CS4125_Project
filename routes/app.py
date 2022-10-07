@@ -2,6 +2,9 @@ from flask import Flask, render_template, redirect, request, url_for
 import pandas
 from Movie import Movie
 
+
+# TODO Change paths so they aren't unique to one machine.
+# TODO maybe use API that  gets current directory
 app = Flask(__name__,
             template_folder='/home/andrew/PycharmProjects/cs4125/CS4125-Project/templates',
             static_folder='/home/andrew/PycharmProjects/cs4125/CS4125-Project/static')
