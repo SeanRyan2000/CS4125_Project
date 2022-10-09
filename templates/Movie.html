@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      <link rel="stylesheet" href="{{ url_for('static', filename='Movie.css') }}">
+<!--    <link rel="stylesheet" href="/home/andrew/PycharmProjects/cs4125/CS4125-Project/static/Movie.css">-->
+    <title>Movies</title>
+</head>
+<body>
+
+
+
+{% for movie in movieList %}
+<div class="movie">
+    <p style="font-size: 24px">{{movie.toString()}}</p>
+<form action="/test" method="post" name={{movie.getName()}}>
+    <button name={{movie.getName()}} type="submit">Buy ticket for {{movie.getName()}}</button>
+</form>
+
+
+</div>
+{% endfor %}
+
+</body>
+</html>
