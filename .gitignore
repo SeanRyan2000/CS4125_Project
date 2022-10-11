@@ -1,2 +1,3 @@
 # Ignore local variables file
 localVars.py
+*/__pycache__
