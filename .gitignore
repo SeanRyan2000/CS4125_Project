@@ -1,3 +1,4 @@
 # Ignore local variables file
 localVars.py
 */__pycache__
+*.csv
