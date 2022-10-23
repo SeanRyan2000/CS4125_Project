@@ -1,8 +1,11 @@
 from flask import Flask, render_template, redirect, request, url_for
 import os.path
 import pandas
+
+# from CS4125_Project.model.Register import *
 # from Movie import Movie
-from CS4125_Project.model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual
+from CS4125_Project.model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
+    registerNewUser, checkIfEmailExists
 
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
@@ -61,12 +64,20 @@ def registerUser():
     if not validatePasswordStrength(str(request.form.to_dict().get('psw'))):
         error = 'password not strong enough'
         return render_template('register.html', error=error)
+
     if not emailValidator((request.form.to_dict().get('email'))):
         error = 'not a vaild email'
         return render_template('register.html', error=error)
+
     if not ensurePasswordsAreEqual(request.form.to_dict().get('psw'), request.form.to_dict().get('psw-repeat')):
         error = 'passwords not equal'
         return render_template('register.html', error=error)
+
+    if checkIfEmailExists(request.form.to_dict().get('email')):
+        error = 'email already in use'
+        return render_template('register.html', error=error)
+
+    registerNewUser(request.form.to_dict().get('email'), request.form.to_dict().get('psw'))
 
     return redirect('/home')
 
@@ -74,3 +85,10 @@ def registerUser():
 def loginSuccessfully():
 
     return render_template('login_TEST_CLASS.html')
+
+@app.errorhandler(404)
+def not_found(e):
+
+    # When a 404 not found error is thrown, this page will load.
+    # TODO update this HTML page
+    return render_template('page_not_found.html')
