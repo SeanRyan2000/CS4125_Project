@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base.html' %}
+
+
+{% block content %}
+{{super()}}
       <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
-    <title>Movies</title>
-</head>
 
 {% if error %}
 <div class="error">
@@ -32,6 +31,9 @@
   </div>
 
   <div class="container signin">
-    <p>Already have an account? <a href="#">Sign in</a>.</p>
+    <p>Already have an account? <a href="{{ url_for('signin') }}">Sign in</a></p>
+
   </div>
 </form>
+
+{% endblock %}
