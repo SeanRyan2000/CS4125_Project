@@ -21,20 +21,24 @@ def __init__(self, name):
     self.app = Flask(name)
 
 
-# @app.route('/movies')
-# def hello_world():
-#     movieList = []
-#
-#     df = pandas.read_csv(CSV_PATH_STRING)
-#
-#     movieName = df['MOVIE'].tolist()
-#     seatsLeft = df['TICKETS'].tolist()
-#     for i in range(len(movieName)):
-#         movie = Movie(movieName[i], seatsLeft[i])
-#         movieList.append(movie)
-#         print(movieList)
-#
-#     return render_template('Movie.html', movieList=movieList)
+@app.route('/movies')
+def movie():
+    # movieList = []
+
+    # df = pandas.read_csv(CSV_PATH_STRING)
+
+    # movieName = df['MOVIE'].tolist()
+    # seatsLeft = df['TICKETS'].tolist()
+    # for i in range(len(movieName)):
+    #     movie = Movie(movieName[i], seatsLeft[i])
+    #     movieList.append(movie)
+    #     print(movieList)
+
+    return render_template('movie.html')
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 @app.route("/test", methods=['POST'])
 def buy_ticket_for_movie():
@@ -57,6 +61,10 @@ def buy_ticket_for_movie():
 def registration():
 
     return render_template('register.html')
+
+@app.route('/signin')
+def signin():
+    return render_template('signin.html')
 
 @app.route("/registerUser", methods=['POST'])
 def registerUser():
