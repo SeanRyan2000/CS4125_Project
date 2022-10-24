@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, session
 import os.path
 import pandas
 
@@ -6,6 +6,8 @@ import pandas
 # from Movie import Movie
 from CS4125_Project.model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
     registerNewUser, checkIfEmailExists
+
+from CS4125_Project.model.SignIn import checkEmailExists, verifyEmailAndPassword
 
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
@@ -15,6 +17,7 @@ app = Flask(__name__,
             template_folder=TEMPLATES_PATH_STRING,
             static_folder=STATIC_PATH_STRING
             )
+app.secret_key = 'secret key ahh'
 
 
 def __init__(self, name):
@@ -66,6 +69,20 @@ def registration():
 def signin():
     return render_template('signin.html')
 
+@app.route('/signInUser', methods=['POST'])
+def validateSignIn():
+
+    if not checkEmailExists((request.form.to_dict().get('email'))):
+        error = 'Email doesn\'t exist'
+        return render_template('signin.html', error=error)
+    if not verifyEmailAndPassword((request.form.to_dict().get('email')), (request.form.to_dict().get('password'))):
+        error = 'Password incorrect'
+        return render_template('signin.html', error=error)
+
+    session['signin'] = True
+    print(session['signin'])
+    return render_template('base.html', data=session['signin'])
+
 @app.route("/registerUser", methods=['POST'])
 def registerUser():
 
@@ -100,3 +117,9 @@ def not_found(e):
     # When a 404 not found error is thrown, this page will load.
     # TODO update this HTML page
     return render_template('page_not_found.html')
+
+@app.errorhandler(500)
+def internal_error(e):
+
+    # TODO create a pop up that displays this on the page rather than a new page being loaded
+    return 'Internal server error.'

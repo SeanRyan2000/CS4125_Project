@@ -8,35 +8,33 @@
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
           <div class="card shadow-2-strong" style="border-radius: 1rem;">
             <div class="card-body p-5 text-center">
+
+                {% if error %}
+<div class="error" style="background-color:red;">
+        <p><strong>Error</strong>: {{error}}</p>
+</div>
+    {% endif %}
   
               <h3 class="mb-5">Sign in</h3>
+  <form action="/signInUser" method="POST" name="signInUser">
+              <div class="form-outline mb-4">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control form-control-lg" required />
+              </div>
   
               <div class="form-outline mb-4">
-                <label class="form-label" for="typeEmailX-2">Email</label>
-                <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
+                <label class="form-label" for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control form-control-lg" required/>
               </div>
-  
-              <div class="form-outline mb-4">
-                <label class="form-label" for="typePasswordX-2">Password</label>
-                <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
-              </div>
-  
-              <!-- Checkbox -->
-              <div class="form-check d-flex justify-content-start mb-4">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="form1Example3"
-                />
-                <label class="form-check-label" for="form1Example3"> Remember password </label>
-              </div>
-  
+
               <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-  
+  </form>
+
               <hr class="my-4">
-  
-              <button class="btn btn-lg btn-block btn-primary" style="background-color: #3b5998;" type="submit"  a href="{{ url_for('registration') }}"><i class="fab fa-google me-2"></i> Sign Up</button>
+
+              <form action="{{ url_for('registration') }}">
+                  <input type="submit" class="btn btn-lg btn-block btn-primary" style="background-color: #3b5998;" value="Sign Up">
+              </form>
   
             </div>
           </div>
