@@ -1,4 +1,3 @@
-from ScreenList import ScreenList
 from Screen import Screen
 from Movie import Movie
 import csv
@@ -16,7 +15,7 @@ class Cinema:
         SCREEN_LIST.append(s)
 
     ##Read in Movie Data
-    with open('Movies.csv','r') as movies:
+    with open('csv_files/movies.csv','r') as movies:
         MOVIE_LIST = csv.DictReader(movies)
 
     #Setup Movies for each Screen
