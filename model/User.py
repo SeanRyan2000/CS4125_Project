@@ -29,7 +29,7 @@ class User(ABC):
     def getID_number(self) -> str:
         return f'User ID: {self.ID_number}'
     
-    ##Return whether User is an Admin
+    ##Return whether User is an Admin or not
     def getAdminStatus(self) -> str:
         return f'Admin User: {self.isAdmin}'
     
