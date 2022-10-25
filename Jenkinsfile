@@ -12,14 +12,10 @@ pipeline {
                 // Will likely need to install flask on the docker and run it from that 
                 // inside the docker container running jenkins I may need to set up a new docker container to run the flask and perfrom the test cases
                 echo 'Building..'
-
-                echo 'Move into routes folder '
-                sh 'cd routes/'
-
-                echo 'print working directory to ensure it is the right location'
-                sh 'pwd'
-                sh 'flask shell'
-                sh 'exit()'
+                dir('routes') {
+                    sh 'flask shell'
+                    sh 'exit()'
+                }                
             }
         }
         stage('Test') {
