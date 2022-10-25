@@ -17,7 +17,7 @@ pipeline {
 
                 dir('routes') {
                     sh 'flask shell'
-                    sh 'exit()'
+                    // sh 'exit()'
                 }                
             }
         }
