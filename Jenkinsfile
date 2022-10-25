@@ -6,18 +6,13 @@ pipeline {
         cron('0 14 * * 1-5') 
     }
 
-    stages {
-        stage('checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        
+    stages {        
         stage('Build') {
             steps {
                 // Will likely need to install flask on the docker and run it from that 
                 // inside the docker container running jenkins I may need to set up a new docker container to run the flask and perfrom the test cases
                 echo 'Building..'
+                sh 'docker build -t myflaskapp:v1 . '
             }
         }
         stage('Test') {
