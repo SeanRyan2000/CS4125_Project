@@ -9,7 +9,7 @@ if rootDir not in sys.path: # add parent dir to paths
     sys.path.append(rootDir)
 
 
-print(rootDir)
+# print(rootDir)
 
 # from CS4125_Project.model.Register import *
 # from Movie import Movie
