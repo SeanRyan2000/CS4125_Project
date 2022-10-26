@@ -2,6 +2,15 @@ from flask import Flask, render_template, redirect, request, url_for, session
 import os.path
 import pandas
 
+import os, sys
+currDir = os.path.dirname(os.path.realpath(__file__))
+rootDir = os.path.abspath(os.path.join(currDir, '..'))
+if rootDir not in sys.path: # add parent dir to paths
+    sys.path.append(rootDir)
+
+
+print(rootDir)
+
 # from CS4125_Project.model.Register import *
 # from Movie import Movie
 from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
