@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 class Movie:
     movie_name = ''
     seats_left = 0

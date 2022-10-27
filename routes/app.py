@@ -1,6 +1,10 @@
 from flask import Flask, render_template, redirect, request, url_for, session
 import os.path
-import pandas
+import pandas 
+import pandas as pd
+
+ 
+import csv
 
 import os, sys
 currDir = os.path.dirname(os.path.realpath(__file__))
@@ -10,7 +14,6 @@ if rootDir not in sys.path: # add parent dir to paths
 
 
 # print(rootDir)
-
 # from CS4125_Project.model.Register import *
 # from Movie import Movie
 from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
@@ -28,13 +31,29 @@ app = Flask(__name__,
             )
 app.secret_key = 'secret key ahh'
 
+df = pd.read_csv("C:\\Users\\35389\\OneDrive\\Documents\\CS4125-Projects\\CS4125_Project\\csv_files\\movies.csv")
 
+df.to_csv("C:\\Users\\35389\\OneDrive\\Documents\\CS4125-Projects\\CS4125_Project\\csv_files\\movies.csv")
 def __init__(self, name):
     self.app = Flask(name)
 
+# reading the data in the csv file
 
 @app.route('/movies')
 def movie():
+    
+        data = pd.read_csv("C:\\Users\\35389\\OneDrive\\Documents\\CS4125-Projects\\CS4125_Project\\csv_files\\movies.csv") 
+        
+        # elements = {}
+        # for row in data:
+        #     elements[row[0]] =row[1:]
+        # elements = ['first', 'last', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Nine', 'Ten', 'eleventh','twelve']
+            
+        movieName = df['TITLE'].tolist()
+            
+            
+            
+
     # movieList = []
 
     # df = pandas.read_csv(CSV_PATH_STRING)
@@ -46,7 +65,7 @@ def movie():
     #     movieList.append(movie)
     #     print(movieList)
 
-    return render_template('movie.html')
+        return render_template('movie.html'  ,  movieName = movieName)
 
 @app.route('/')
 def home():
