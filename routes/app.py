@@ -1,17 +1,25 @@
 from flask import Flask, render_template, redirect, request, url_for, session
 import os.path
 import pandas 
-
 import pandas as pd
 
  
 import csv
+
+import os, sys
+currDir = os.path.dirname(os.path.realpath(__file__))
+rootDir = os.path.abspath(os.path.join(currDir, '..'))
+if rootDir not in sys.path: # add parent dir to paths
+    sys.path.append(rootDir)
+
+
+# print(rootDir)
 # from CS4125_Project.model.Register import *
 # from Movie import Movie
-from CS4125_Project.model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
+from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
     registerNewUser, checkIfEmailExists
 
-from CS4125_Project.model.SignIn import checkEmailExists, verifyEmailAndPassword
+from model.SignIn import checkEmailExists, verifyEmailAndPassword
 
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
