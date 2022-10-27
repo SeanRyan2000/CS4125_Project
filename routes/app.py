@@ -31,9 +31,16 @@ app = Flask(__name__,
             )
 app.secret_key = 'secret key ahh'
 
-df = pd.read_csv("C:\\Users\\35389\\OneDrive\\Documents\\CS4125-Projects\\CS4125_Project\\csv_files\\movies.csv")
 
-df.to_csv("C:\\Users\\35389\\OneDrive\\Documents\\CS4125-Projects\\CS4125_Project\\csv_files\\movies.csv")
+
+
+
+# THESE LINES NEED TO BE CHANGED... WE SHOULDNT BE USING SYSTEM SPECIFIC PATHS. THIS IS A TEMP FIX MAY NEED TO BE DIFFERENT FOR WINDOWS
+# I BELIEVE THIS SHOULD BE IN A DIFFERENT CLASS - PARTLY UNSURE 
+# IF WE ARE GOING TO HAVE HARDCODE PATHS WE NEED TO HAVE A NEW FILE FOR LOCAL VARIABLES
+df = pd.read_csv("../csv_files/movies.csv")
+
+df.to_csv("../csv_files/movies.csv")
 def __init__(self, name):
     self.app = Flask(name)
 
@@ -42,7 +49,7 @@ def __init__(self, name):
 @app.route('/movies')
 def movie():
     
-        data = pd.read_csv("C:\\Users\\35389\\OneDrive\\Documents\\CS4125-Projects\\CS4125_Project\\csv_files\\movies.csv") 
+        data = pd.read_csv("../csv_files/movies.csv") 
         
         # elements = {}
         # for row in data:
