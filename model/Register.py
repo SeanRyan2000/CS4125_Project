@@ -44,6 +44,7 @@ def registerNewUser(email, password):
     password = password.encode('utf-8')
     #hashing password using bcrypt
     hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+    hashed_password = hashed_password.decode('utf-8')
     # Column names in User CSV file
     field_names = ['USER_ID', 'EMAIL', 'PASSWORD']
 

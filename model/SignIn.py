@@ -22,10 +22,10 @@ def verifyEmailAndPassword(email, password):
 
     eMail = df['EMAIL'].tolist()
     index = eMail.index(email)
-    password = str(password).encode('utf-8')
+    password = password.encode('utf-8')
     pwd = df.at[index, 'PASSWORD']
     #checking encrypted password in CSV against entered password
-    if bcrypt.checkpw(password, pwd): ##This line being a bitch
+    if bcrypt.checkpw(password, pwd.encode('utf-8')):
         return True
     else:
         return False
