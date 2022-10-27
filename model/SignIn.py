@@ -3,6 +3,9 @@ import os
 import pandas
 from flask import request
 
+import bcrypt
+
+
 CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/users.csv'
 
 
@@ -19,9 +22,13 @@ def verifyEmailAndPassword(email, password):
 
     eMail = df['EMAIL'].tolist()
     index = eMail.index(email)
+    password = password.encode('utf-8')
     pwd = df.at[index, 'PASSWORD']
-
-    return password == pwd
+    #checking encrypted password in CSV against entered password
+    if bcrypt.checkpw(password, pwd.encode('utf-8')):
+        return True
+    else:
+        return False
 
 
 
