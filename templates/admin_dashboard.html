@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<section class="" style="background-color: white;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+
+                {% if error %}
+<div class="error" style="background-color:red;">
+        <p><strong>Error</strong>: {{error}}</p>
+</div>
+    {% endif %}
+
+              <h3 class="mb-5">Add movie</h3>
+  <form action="/admin/add_movie" method="POST" name="addmovie">
+              <div class="form-outline mb-4">
+                <label class="form-label" >Movie Name</label>
+                <input name="movie_name" id="movie_name" class="form-control form-control-lg" required />
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label">Movie Length (in minutes)</label>
+                <input type="number" id="movie_length" name="movie_length" class="form-control form-control-lg" required/>
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label">Number of tickets</label>
+                <input type="number" min="1" max="100" id="tickets" name="tickets" class="form-control form-control-lg" required/>
+              </div>
+
+            <div class ="form-outline mb-4">
+                  <input type="radio" id="type" name="type" value="normal" checked>
+                  <label for="type">Normal</label>
+<!--                </div>-->
+
+<!--                <div>-->
+                  <input type="radio" id="childrens" name="type" value="childrens">
+                  <label for="childrens">Childrens</label>
+<!--                </div>-->
+
+<!--                <div>-->
+                  <input type="radio" id="special" name="type" value="special">
+                  <label for="special">Special</label>
+<!--                </div>-->
+
+
+            </div>
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Add movie</button>
+  </form>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

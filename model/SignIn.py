@@ -1,8 +1,7 @@
 import os
 
 import pandas
-from flask import request
-
+from CS4125_Project.model.User import Customer
 import bcrypt
 
 
@@ -26,10 +25,23 @@ def verifyEmailAndPassword(email, password):
     pwd = df.at[index, 'PASSWORD']
     #checking encrypted password in CSV against entered password
     if bcrypt.checkpw(password, pwd.encode('utf-8')):
-        return True
+        signInUser(email, password)
     else:
         return False
 
+def getUserID(email):
+
+    df = pandas.read_csv(CSV_PATH_STRING)
+
+    eMail = df['EMAIL'].tolist()
+    index = eMail.index(email)
+    return df.at[index, 'USER_ID']
+
+def signInUser(email, password):
+
+    current_user = Customer.User(getUserID(email),email, password, False)
+
+    print(current_user)
 
 
 
