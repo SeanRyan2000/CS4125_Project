@@ -1,7 +1,7 @@
-from User import User
+from CS4125_Project.model.User import User
 import csv
 
-class Customer(User):
+class Customer(User.User):
     def __init__(self, email, password, ID_number, isAdmin):
         super().__init__(email, password, ID_number, isAdmin)
      

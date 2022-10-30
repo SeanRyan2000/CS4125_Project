@@ -10,14 +10,9 @@
 
 
 
-{% for movie in movieList %}
+{% for movie in movieName %}
 <div class="movie">
-    <p style="font-size: 24px">{{movie.toString()}}</p>
-<form action="/test" method="post" name={{movie.getName()}}>
-    <button name={{movie.getName()}} type="submit">Buy ticket for {{movie.getName()}}</button>
-</form>
-
-
+    <p style="font-size: 24px">{{movie}}</p>
 </div>
 {% endfor %}
 

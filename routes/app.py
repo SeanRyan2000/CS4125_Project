@@ -21,9 +21,11 @@ from model.Register import validatePasswordStrength, emailValidator, ensurePassw
 
 from model.SignIn import checkEmailExists, verifyEmailAndPassword
 
+from model.Admin.AddMovie import addNormalMovie, addChildMovie, addSpecialMovie, addMovieToCSV
+
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
-CSV_PATH_STRING = str(os.path.abspath('..')) + '/file.csv'
+MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
 
 app = Flask(__name__,
             template_folder=TEMPLATES_PATH_STRING,
@@ -31,16 +33,6 @@ app = Flask(__name__,
             )
 app.secret_key = 'secret key ahh'
 
-
-
-
-
-# THESE LINES NEED TO BE CHANGED... WE SHOULDNT BE USING SYSTEM SPECIFIC PATHS. THIS IS A TEMP FIX MAY NEED TO BE DIFFERENT FOR WINDOWS
-# I BELIEVE THIS SHOULD BE IN A DIFFERENT CLASS - PARTLY UNSURE 
-# IF WE ARE GOING TO HAVE HARDCODE PATHS WE NEED TO HAVE A NEW FILE FOR LOCAL VARIABLES
-df = pd.read_csv("../csv_files/movies.csv")
-
-df.to_csv("../csv_files/movies.csv")
 def __init__(self, name):
     self.app = Flask(name)
 
@@ -49,50 +41,29 @@ def __init__(self, name):
 @app.route('/movies')
 def movie():
     
-        data = pd.read_csv("../csv_files/movies.csv") 
-        
-        # elements = {}
-        # for row in data:
-        #     elements[row[0]] =row[1:]
-        # elements = ['first', 'last', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Nine', 'Ten', 'eleventh','twelve']
-            
-        movieName = df['TITLE'].tolist()
-            
-            
-            
-
-    # movieList = []
-
-    # df = pandas.read_csv(CSV_PATH_STRING)
-
-    # movieName = df['MOVIE'].tolist()
-    # seatsLeft = df['TICKETS'].tolist()
-    # for i in range(len(movieName)):
-    #     movie = Movie(movieName[i], seatsLeft[i])
-    #     movieList.append(movie)
-    #     print(movieList)
-
-        return render_template('movie.html'  ,  movieName = movieName)
+        data = pd.read_csv(MOVIE_CSV_PATH_STRING)
+        movieName = data['TITLE'].tolist()
+        return render_template('Movie.html',  movieName = movieName)
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route("/test", methods=['POST'])
-def buy_ticket_for_movie():
-
-    df = pandas.read_csv(CSV_PATH_STRING)
-    movieName = df['MOVIE'].tolist()
-
-    # Check which button was clicked on the movies page by reading the request form and getting the movie name from that
-    # Finding the column index of the movie in the CSV file
-    index = movieName.index(list(request.form.to_dict())[0])
-
-    # Decrease the ticket amount when a ticket is bought and update the CSV file
-    df.at[index, 'TICKETS'] = df.at[index, 'TICKETS'] - 1
-    df.to_csv(CSV_PATH_STRING, index=False)
-
-    return redirect('/movies')
+# @app.route("/test", methods=['POST'])
+# def buy_ticket_for_movie():
+#
+#     df = pandas.read_csv(CSV_PATH_STRING)
+#     movieName = df['MOVIE'].tolist()
+#
+#     # Check which button was clicked on the movies page by reading the request form and getting the movie name from that
+#     # Finding the column index of the movie in the CSV file
+#     index = movieName.index(list(request.form.to_dict())[0])
+#
+#     # Decrease the ticket amount when a ticket is bought and update the CSV file
+#     df.at[index, 'TICKETS'] = df.at[index, 'TICKETS'] - 1
+#     df.to_csv(CSV_PATH_STRING, index=False)
+#
+#     return redirect('/movies')
 
 
 @app.route("/register", methods=['POST', 'GET'])
@@ -158,3 +129,24 @@ def internal_error(e):
 
     # TODO create a pop up that displays this on the page rather than a new page being loaded
     return 'Internal server error.'
+
+@app.route('/admin')
+def admin():
+    return render_template('admin_dashboard.html')
+
+@app.route('/admin/add_movie', methods=['POST'])
+def add_movie():
+
+    if request.form.to_dict().get('type') == 'normal':
+        movie_to_be_added = addNormalMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
+        addMovieToCSV(movie_to_be_added)
+    elif request.form.to_dict().get('type') == 'childrens':
+        movie_to_be_added = addChildMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
+        addMovieToCSV(movie_to_be_added)
+    elif request.form.to_dict().get('type') == 'special':
+        movie_to_be_added = addSpecialMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
+        addMovieToCSV(movie_to_be_added)
+    else:
+        print('error')
+
+    return redirect('/admin')

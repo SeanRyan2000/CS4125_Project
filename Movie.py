@@ -1,4 +1,3 @@
-from Ticket import Ticket
 
 class Movie:
     def __init__(self, title, length, t, tickets):
@@ -19,7 +18,7 @@ class Movie:
     ##Set the Screen Movie is being Played in
     def setScreenNum(self, screenNum):
         self.screenNum = screenNum
- 
+
     ##Return Movie Title & Length
     def printMovie(self) -> str:
         return "{} ({})".format(self.title, self.getMovieLength())

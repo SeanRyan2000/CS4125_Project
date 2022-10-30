@@ -2,7 +2,7 @@ import abc
 from abc import ABC, abstractmethod
 import csv
 
-class User(ABC):
+class User(abc.ABC):
     def __init__(self, email, password, ID_number, isAdmin):
         self.email = email
         self.password = password
