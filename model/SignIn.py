@@ -1,7 +1,7 @@
 import os
 
 import pandas
-from CS4125_Project.model.User import Customer
+from model.User import Customer
 import bcrypt
 
 

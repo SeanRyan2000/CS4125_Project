@@ -1,9 +1,9 @@
 import csv
 import os
 
-from CS4125_Project.model.Movie.ChildrensMovie import ChildrensMovie
-from CS4125_Project.model.Movie.NormalMovie import NormalMovie
-from CS4125_Project.model.Movie.SpecialMovie import SpecialMovie
+from model.Movie.ChildrensMovie import ChildrensMovie
+from model.Movie.NormalMovie import NormalMovie
+from model.Movie.SpecialMovie import SpecialMovie
 
 MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
 
