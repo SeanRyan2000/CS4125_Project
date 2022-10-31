@@ -1,4 +1,4 @@
-import CS4125_Project.model.Movie.Movie as Movie
+import model.Movie.Movie as Movie
 
 class ChildrensMovie(Movie.Movie):
 
