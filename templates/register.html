@@ -5,14 +5,15 @@
 {{super()}}
       <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
 
-{% if error %}
-<div class="error">
-        <p><strong>Error</strong>: {{error}}</p>
-</div>
-    {% endif %}
-
 <form action="/registerUser" method="POST" name="register">
   <div class="container">
+
+    {% if error %}
+    <div class="error" style="background-color:red;">
+            <p><strong>Error</strong>: {{error}}</p>
+    </div>
+
+    {% endif %}
     <h1>Register</h1>
     <p>Please fill in this form to create an account.</p>
     <hr>

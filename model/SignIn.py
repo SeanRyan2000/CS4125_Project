@@ -1,6 +1,7 @@
 import os
 
 import pandas
+from flask import session
 from model.User import Customer
 import bcrypt
 
@@ -42,6 +43,14 @@ def signInUser(email, password):
     current_user = Customer.User(getUserID(email),email, password, False)
 
     print(current_user)
+
+def checkAdminSignIn(email, password):
+
+    if email == 'admin@admin.com' and password == 'admin':
+        session['admin'] = 'true'
+        return True
+
+    return False
 
 
 

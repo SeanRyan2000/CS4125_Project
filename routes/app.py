@@ -1,25 +1,26 @@
-from flask import Flask, render_template, redirect, request, url_for, session
+from functools import wraps
+
+from flask import Flask, render_template, redirect, request, url_for, session, abort
 import os.path
-import pandas 
+import pandas
 import pandas as pd
 
- 
 import csv
 
 import os, sys
+
 currDir = os.path.dirname(os.path.realpath(__file__))
 rootDir = os.path.abspath(os.path.join(currDir, '..'))
-if rootDir not in sys.path: # add parent dir to paths
+if rootDir not in sys.path:  # add parent dir to paths
     sys.path.append(rootDir)
-
 
 # print(rootDir)
 # from CS4125_Project.model.Register import *
 # from Movie import Movie
-from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
+from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual, \
     registerNewUser, checkIfEmailExists
 
-from model.SignIn import checkEmailExists, verifyEmailAndPassword
+from model.SignIn import checkEmailExists, verifyEmailAndPassword, checkAdminSignIn
 
 from model.Admin.AddMovie import addNormalMovie, addChildMovie, addSpecialMovie, addMovieToCSV
 
@@ -33,21 +34,33 @@ app = Flask(__name__,
             )
 app.secret_key = 'secret key ahh'
 
+
 def __init__(self, name):
     self.app = Flask(name)
 
-# reading the data in the csv file
+
+def admin_required(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        if "admin" not in session:
+            return abort(401)  # Authorization required
+        else:
+            return function()
+
+    return wrapper
+
 
 @app.route('/movies')
 def movie():
-    
-        data = pd.read_csv(MOVIE_CSV_PATH_STRING)
-        movieName = data['TITLE'].tolist()
-        return render_template('Movie.html',  movieName = movieName)
+    data = pd.read_csv(MOVIE_CSV_PATH_STRING)
+    movieName = data['TITLE'].tolist()
+    return render_template('Movie.html', movieName=movieName)
+
 
 @app.route('/')
 def home():
     return render_template('home.html')
+
 
 # @app.route("/test", methods=['POST'])
 # def buy_ticket_for_movie():
@@ -68,16 +81,19 @@ def home():
 
 @app.route("/register", methods=['POST', 'GET'])
 def registration():
-
     return render_template('register.html')
+
 
 @app.route('/signin')
 def signin():
     return render_template('signin.html')
 
+
 @app.route('/signInUser', methods=['POST'])
 def validateSignIn():
 
+    if checkAdminSignIn(request.form['email'], request.form['password']):
+        return redirect('/admin')
     if not checkEmailExists((request.form.to_dict().get('email'))):
         error = 'Email doesn\'t exist'
         return render_template('signin.html', error=error)
@@ -89,9 +105,9 @@ def validateSignIn():
     print(session['signin'])
     return render_template('base.html', data=session['signin'])
 
+
 @app.route("/registerUser", methods=['POST'])
 def registerUser():
-
     if not validatePasswordStrength(str(request.form.to_dict().get('psw'))):
         error = 'password not strong enough'
         return render_template('register.html', error=error)
@@ -112,41 +128,57 @@ def registerUser():
 
     return redirect('/home')
 
+
 @app.route('/home')
 def loginSuccessfully():
-
     return render_template('login_TEST_CLASS.html')
+
+
+@app.route('/admin')
+@admin_required
+def admin():
+    return render_template('admin_dashboard.html')
+
+
+@app.route('/admin/add_movie', methods=['POST'])
+@admin_required
+def add_movie():
+    if request.form.to_dict().get('type') == 'normal':
+        movie_to_be_added = addNormalMovie(request.form['movie_name'], request.form['movie_length'],
+                                           request.form['tickets'])
+        addMovieToCSV(movie_to_be_added)
+    elif request.form.to_dict().get('type') == 'childrens':
+        movie_to_be_added = addChildMovie(request.form['movie_name'], request.form['movie_length'],
+                                          request.form['tickets'])
+        addMovieToCSV(movie_to_be_added)
+    elif request.form.to_dict().get('type') == 'special':
+        movie_to_be_added = addSpecialMovie(request.form['movie_name'], request.form['movie_length'],
+                                            request.form['tickets'])
+        addMovieToCSV(movie_to_be_added)
+    else:
+        return render_template('admin_dashboard.html', failure='Something went wrong. Try again.')
+
+    return render_template('admin_dashboard.html', success='Movie added successfully')
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 @app.errorhandler(404)
 def not_found(e):
-
     # When a 404 not found error is thrown, this page will load.
     # TODO update this HTML page
     return render_template('page_not_found.html')
 
+
 @app.errorhandler(500)
 def internal_error(e):
-
     # TODO create a pop up that displays this on the page rather than a new page being loaded
     return 'Internal server error.'
 
-@app.route('/admin')
-def admin():
-    return render_template('admin_dashboard.html')
-
-@app.route('/admin/add_movie', methods=['POST'])
-def add_movie():
-
-    if request.form.to_dict().get('type') == 'normal':
-        movie_to_be_added = addNormalMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
-        addMovieToCSV(movie_to_be_added)
-    elif request.form.to_dict().get('type') == 'childrens':
-        movie_to_be_added = addChildMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
-        addMovieToCSV(movie_to_be_added)
-    elif request.form.to_dict().get('type') == 'special':
-        movie_to_be_added = addSpecialMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
-        addMovieToCSV(movie_to_be_added)
-    else:
-        print('error')
-
-    return redirect('/admin')
+@app.errorhandler(401)
+def unauthorized(e):
+    # TODO create a pop up that displays this on the page rather than a new page being loaded
+    return render_template('access_denied.html')

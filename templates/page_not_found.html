@@ -1,23 +1,33 @@
+{% extends 'base.html' %}
 
+{% block content %}
 
-<!doctype html>
-<html>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Error 404 - Page Not Found!</title>
-    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
-    <link href="./assets/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
-</head>
-
-<body>
-    <div class="container" >
-        <br />
-        <h3>This page does not exist...
-            <br /> Check the URL or click here to return to the homepage.</h3>
-        <br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template" style="padding: 40px 15px;text-align: center;">
+                <h1>
+                    Oops!</h1>
+                <h2>
+                    404 Not Found</h2>
+                <div class="error-details">
+                    Sorry, an error has occured, Requested page not found!
+                </div>
+                <div class="error-actions" style="margin-top:15px;margin-bottom:15px;">
+                    <a href="http://www.jquery2dotnet.com" class="btn btn-primary btn-lg" style="margin-right:10px;"><span class="glyphicon glyphicon-home"></span>
+                        Take Me Home </a><a href="http://www.jquery2dotnet.com" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contact Support </a>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </body>
-
 </html>
+
+
+{% endblock %}
