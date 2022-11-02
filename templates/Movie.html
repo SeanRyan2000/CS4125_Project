@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-      <link rel="stylesheet" href="{{ url_for('static', filename='Movie.css') }}">
-<!--    <link rel="stylesheet" href="/home/andrew/PycharmProjects/cs4125/CS4125-Project/static/Movie.css">-->
-    <title>Movies</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-
+{% block content %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='Movie.css') }}">
 
 {% for movie in movieName %}
 <div class="movie">
@@ -16,5 +10,6 @@
 </div>
 {% endfor %}
 
-</body>
-</html>
+
+{% endblock %}
+
