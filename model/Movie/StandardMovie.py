@@ -1,9 +1,10 @@
 import model.Movie.Movie as Movie
 
-class NormalMovie(Movie.Movie):
+class StandardMovie(Movie.Movie):
 
     def __init__(self, title, length, tickets):
         super().__init__(title, length, tickets)
+        self.type = "standard"
 
     def getMovieType(self):
-        return "Normal"
+        return self.type

@@ -21,7 +21,7 @@ from model.Register import validatePasswordStrength, emailValidator, ensurePassw
 
 from model.SignIn import checkEmailExists, verifyEmailAndPassword
 
-from model.Admin.AddMovie import addNormalMovie, addChildMovie, addSpecialMovie, addMovieToCSV
+from model.Admin.AddMovie import addNewReleaseMovie, addChildrensMovie, addStandardMovie, addMovieToCSV
 
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
@@ -137,14 +137,14 @@ def admin():
 @app.route('/admin/add_movie', methods=['POST'])
 def add_movie():
 
-    if request.form.to_dict().get('type') == 'normal':
-        movie_to_be_added = addNormalMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
+    if request.form.to_dict().get('type') == 'new':
+        movie_to_be_added = addNewReleaseMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
         addMovieToCSV(movie_to_be_added)
     elif request.form.to_dict().get('type') == 'childrens':
-        movie_to_be_added = addChildMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
+        movie_to_be_added = addChildrensMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
         addMovieToCSV(movie_to_be_added)
-    elif request.form.to_dict().get('type') == 'special':
-        movie_to_be_added = addSpecialMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
+    elif request.form.to_dict().get('type') == 'standard':
+        movie_to_be_added = addStandardMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
         addMovieToCSV(movie_to_be_added)
     else:
         print('error')
