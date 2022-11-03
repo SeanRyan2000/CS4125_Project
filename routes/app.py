@@ -33,10 +33,14 @@ app = Flask(__name__,
             )
 app.secret_key = 'secret key ahh'
 
+
 def __init__(self, name):
     self.app = Flask(name)
 
 # reading the data in the csv file
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 @app.route('/movies')
 def movie():
