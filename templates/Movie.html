@@ -1,15 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{{super()}}
-<link rel="stylesheet" href="{{ url_for('static', filename='Movie.css') }}">
+<!-- {{super()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='Movie.css') }}"> -->
 
-{% for movie in movieName %}
-<div class="movie">
-    <p style="font-size: 24px">{{movie}}</p>
+<div class="container mt-4">
+
+    {% for row in movieName |batch(3) %}
+    <div class="row g-3">
+
+        {% for column in row %}
+
+        <div class="col-4 mb-2">
+            <div class="card">
+                <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+                <div class="card-body">
+                  <p class="card-text text-center">{{column }}</p> 
+                  <div class="text-center">
+
+                  <button type="button" class="btn btn-primary">Buy Now</button>
+                </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+    {% endfor %}
+
 </div>
-{% endfor %}
 
 
 {% endblock %}
+
 
