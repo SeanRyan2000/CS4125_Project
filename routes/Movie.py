@@ -2,22 +2,30 @@ import pandas as pd
 
 
 class Movie:
-    movie_name = ''
-    seats_left = 0
+    def __init__(self, title, length, t, tickets):
+        self.title = title
+        self.length = length
+        self.type = ""
+        self.tickets = tickets
+        self.screenNum = 0
 
-    def __init__(self, m, t):
-        self.movie_name = m
-        self.seats_left = t
+    def getTicketsLeft(self):
+        return self.tickets
 
-    def alter_seats_left(self, numberOfSeats):
-        return self.seats_left-numberOfSeats
+    def setTicketsLeft(self, numberOfSeats):
+        return self.tickets - numberOfSeats
 
-    def setMovieName(movieName):
-        movie_name = movieName
+    def setScreenNum(self, screenNum):
+        self.screenNum = screenNum
+
+    def setMovieName(self, movieName):
+        self.title = movieName
 
     def getName(self):
         return str(self.movie_name)
 
-    def toString(self):
-        return f'Movie Name: {self.movie_name}. Tickets left: {self.seats_left}'
+    def printMovie(self) -> str:
+        return "{} ({})".format(self.title, self.getMovieLength())
 
+    def getMovieLength(self):
+        return "{}:{}".format(self.length // 60, str(self.length % 60).zfill(2))

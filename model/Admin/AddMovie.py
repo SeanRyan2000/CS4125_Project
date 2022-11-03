@@ -2,22 +2,22 @@ import csv
 import os
 
 from model.Movie.ChildrensMovie import ChildrensMovie
-from model.Movie.NormalMovie import NormalMovie
-from model.Movie.SpecialMovie import SpecialMovie
+from model.Movie.StandardMovie import StandardMovie
+from model.Movie.NewReleaseMovie import NewReleaseMovie
 
 MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
 
 
-def addNormalMovie(title, length, tickets):
-    movie = NormalMovie(title, length, tickets)
+def addNewReleaseMovie(title, length, tickets):
+    movie = NewReleaseMovie(title, length, tickets)
     return movie
 
-def addChildMovie(title, length, tickets):
+def addChildrensMovie(title, length, tickets):
     movie = ChildrensMovie(title, length, tickets)
     return movie
 
-def addSpecialMovie(title, length, tickets):
-    movie = SpecialMovie(title, length, tickets)
+def addStandardMovie(title, length, tickets):
+    movie = StandardMovie(title, length, tickets)
     return movie
 
 def addMovieToCSV(movie):

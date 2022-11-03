@@ -3,7 +3,7 @@ class Movie:
     def __init__(self, title, length, t, tickets):
         self.title = title
         self.length = length
-        self.t = t
+        self.type = t
         self.tickets = tickets
         self.screenNum = 0
 
