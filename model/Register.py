@@ -41,10 +41,9 @@ def emailValidator(email):
     return True
 
 def registerNewUser(email, password):
-    password = password.encode('utf-8')
+
     #hashing password using bcrypt
-    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
-    hashed_password = hashed_password.decode('utf-8')
+    hashed_password = encryptPassword(password)
     # Column names in User CSV file
     field_names = ['USER_ID', 'EMAIL', 'PASSWORD']
 
@@ -56,6 +55,14 @@ def registerNewUser(email, password):
         dict_object = csv.DictWriter(csv_file, fieldnames=field_names)
 
         dict_object.writerow(dict)
+
+def encryptPassword(password):
+
+    password = password.encode('utf-8')
+    #hashing password using bcrypt
+    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+    hashed_password = hashed_password.decode('utf-8')
+    return hashed_password
 
 def checkIfEmailExists(email):
 
