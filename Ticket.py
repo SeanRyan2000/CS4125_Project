@@ -1,8 +1,9 @@
 class Ticket:
-    def __init__(self, movieName, movieLength, screenNum, price):
+    def __init__(self, movieName, movieLength, screenNum, t, price):
         self.movieName = movieName
         self.movieLength = movieLength
         self.screenNum = screenNum
+        self.type = t
         self.price = price
     
     ##Get the Price for Ticket
@@ -10,8 +11,5 @@ class Ticket:
         return self.price
 
     ##Print Ticket Information
-    def printTicketInfo(self):
-        print("Movie: ", self.movieName)
-        print("Time: ", self.movieLength)
-        print("Screen: ", self.screenNum)
-        print("Price: ", self.price)
+    def returnTicketInfo(self):
+        return "Movie: {}\n Time: {}\n Screen: {}\n Type: {}\n Price: {}\n".format(self.movieName, self.movieLength, self.screenNum, self.type, self.price)
