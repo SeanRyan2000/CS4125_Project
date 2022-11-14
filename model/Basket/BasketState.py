@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
-import Basket
+from Basket import Basket
 
 class BasketState(ABC):
 
     @property
-    def order(self) -> Basket:
+    def basket(self) -> Basket:
         return self._basket
 
-    @order.setter
-    def order(self, basket: Basket) -> None:
-        self.basket = basket
+    @basket.setter
+    def basket(self, basket: Basket) -> None:
+        self._basket = basket
 
     @abstractmethod
     def addItem(self, item, quantity) -> None:

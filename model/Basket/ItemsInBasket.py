@@ -1,5 +1,5 @@
-import BasketState
-import BasketEmpty
+from BasketState import BasketState
+from BasketEmpty import BasketEmpty
 
 class ItemsInBasket(BasketState):
    
@@ -33,7 +33,17 @@ class ItemsInBasket(BasketState):
         self.order.setOrderState(BasketEmpty())
 
     def viewBasket(self) -> None:
-        pass
+        totalCost = 0
+        print("---------------------")
+        for item in self.items:
+            quantity = self.items[item]
+            cost = quantity * item.price
+            print(" + " + item.name + " - " + str(quantity) + " x £" + '{0:.2f}'.format(item.price) + " = £" + '{0:.2f}'.format(cost))
+            totalCost += cost
+            
+        print("---------------------")  
+        print(" = £" + '{0:.2f}'.format(totalCost))
+        print("---------------------")
 
     def getTotalCost(self) -> None:
         totalCost = 0
