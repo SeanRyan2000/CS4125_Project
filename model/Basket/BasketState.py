@@ -12,13 +12,28 @@ class BasketState(ABC):
         self.basket = basket
 
     @abstractmethod
-    def addItems(self, item, quantity) -> None:
+    def addItem(self, item, quantity) -> None:
         pass
 
     @abstractmethod
-    def removeItems(self, item, quantity) -> None:
+    def removeItem(self, item, quantity) -> None:
+        pass
+
+    @abstractmethod
+    def updateItem(self) -> None:
         pass
 
     @abstractmethod
     def clearBasket(self) -> None:
         pass
+
+    @abstractmethod
+    def viewBasket(self) -> None:
+        pass
+
+    @abstractmethod
+    def getTotalCost(self) -> None:
+        pass
+
+
+    
