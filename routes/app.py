@@ -19,7 +19,11 @@ if rootDir not in sys.path: # add parent dir to paths
 from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
     registerNewUser, checkIfEmailExists
 
-from model.SignIn import checkEmailExists, verifyEmailAndPassword
+from model.SignIn import
+
+from model.Movie import MovieFactory
+
+movieFactory = MovieFactory.MovieFactory()
 
 from model.Admin.AddMovie import addNewReleaseMovie, addChildrensMovie, addStandardMovie, addMovieToCSV
 
@@ -141,15 +145,11 @@ def admin():
 @app.route('/admin/add_movie', methods=['POST'])
 def add_movie():
 
-    if request.form.to_dict().get('type') == 'new':
-        movie_to_be_added = addNewReleaseMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
-        addMovieToCSV(movie_to_be_added)
-    elif request.form.to_dict().get('type') == 'childrens':
-        movie_to_be_added = addChildrensMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
-        addMovieToCSV(movie_to_be_added)
-    elif request.form.to_dict().get('type') == 'standard':
-        movie_to_be_added = addStandardMovie(request.form['movie_name'], request.form['movie_length'], request.form['tickets'])
-        addMovieToCSV(movie_to_be_added)
+    if request.form.to_dict() is not None:
+        movieToBeAdded = movieFactory.createMovie(request.form.to_dict())
+        print(request.form.to_dict())
+        print(movieToBeAdded)
+        addMovieToCSV(movieToBeAdded)
     else:
         print('error')
 

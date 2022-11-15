@@ -4,7 +4,7 @@ import abc
 class Movie(abc.ABC):
 
     def __init__(self, title, length, tickets):
-        self.title = title
+        self.movie_name = title
         self.length = length
         self.type = ""
         self.tickets = tickets
@@ -29,4 +29,4 @@ class Movie(abc.ABC):
         return "{} ({})".format(self.title, self.getMovieLength())
 
     def getMovieLength(self):
-        return "{}:{}".format(self.length // 60, str(self.length % 60).zfill(2))
+        return self.length

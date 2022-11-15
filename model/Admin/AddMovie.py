@@ -22,4 +22,4 @@ def addStandardMovie(title, length, tickets):
 
 def addMovieToCSV(movie):
     with open(MOVIE_CSV_PATH_STRING, 'a') as file:
-        file.write("\n" + movie.getTitle() + "," + str(movie.getLength()) + "," + str(movie.getMovieType()) + "," + str(movie.getTickets()))
+        file.write("\n" + movie.getName() + "," + str(movie.getMovieLength()) + "," + str(movie.getMovieType()) + "," + str(movie.getTicketsLeft()))
