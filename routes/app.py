@@ -19,7 +19,7 @@ if rootDir not in sys.path: # add parent dir to paths
 from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
     registerNewUser, checkIfEmailExists
 
-from model.SignIn import
+from model.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
 
 from model.Movie import MovieFactory
 
@@ -123,7 +123,7 @@ def registerUser():
 @app.route('/home')
 def loginSuccessfully():
 
-    return render_template('login_TEST_CLASS.html')
+    return render_template('base.html')
 
 @app.errorhandler(404)
 def not_found(e):
