@@ -9,7 +9,9 @@ class Basket:
 
     def __init__(self, basketState: BasketState) -> None:
         self.setBasket(basketState)
-        self.items = {}
+        self._items = {}
+        self._commands = {}
+        self._history = []
 
     ##State Methods
     def setBasket(self, basketState: BasketState):
@@ -80,7 +82,7 @@ Concrete Basket Empty Class
 class BasketEmpty(BasketState):
 
     def addItem(self, item, quantity = 1) -> None:
-        self.basket.items[item] = quantity
+        self.basket._items[item] = quantity
         self.basket.setBasket(ItemsInBasket())
 
     def removeItem(self, item, quantity) -> None:
@@ -105,40 +107,40 @@ Concrete Items in Basket Class
 class ItemsInBasket(BasketState):
    
     def addItem(self, item, quantity = 1) -> None:
-        if item in self.basket.items:
-            self.basket.items[item] += quantity
+        if item in self.basket._items:
+            self.basket._items[item] += quantity
         else: 
-            self.basket.items[item] = quantity
+            self.basket._items[item] = quantity
 
     def removeItem(self, item, quantity = 0) -> None:
         if quantity<=0: 
-            self.basket.items.pop(item, None)
+            self.basket._items.pop(item, None)
         else:
-            if item in self.basket.items:
-                if quantity<self.basket.items[item]:
-                    self.basket.items[item] -= quantity
+            if item in self.basket._items:
+                if quantity<self.basket._items[item]:
+                    self.basket._items[item] -= quantity
                 else:
-                    self.basket.items.pop(item, None)
+                    self.basket._items.pop(item, None)
 
-        if len(self.basket.items) == 0:
+        if len(self.basket._items) == 0:
             self.basket.setBasket(BasketEmpty())
 
     def updateItem(self, item, quantity) -> None:
         if quantity > 0: 
-            self.basket.items[item] = quantity
+            self.basket._items[item] = quantity
         else:
             self.removeItem(item)
 
     def clearBasket(self) -> None:
-        self.basket.items = {}
+        self.basket._items = {}
         self.basket.setBasket(BasketEmpty())
 
     #Update class to work for Ticket class
     def viewBasket(self) -> None:
         totalCost = 0
         print("---------------------")
-        for item in self.basket.items:
-            quantity = self.basket.items[item]
+        for item in self.basket._items:
+            quantity = self.basket._items[item]
 
             cost = quantity * item.getPrice()
             if hasattr(item, "ticketType"):
@@ -160,8 +162,8 @@ class ItemsInBasket(BasketState):
     def getTotalCost(self) -> None:
         totalCost = 0
         
-        for item in self.basket.items:
-            quantity = self.basket.items[item]
+        for item in self.basket._items:
+            quantity = self.basket._items[item]
             cost = quantity * item.price
             totalCost += cost
         
