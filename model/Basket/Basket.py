@@ -142,7 +142,7 @@ class ItemsInBasket(BasketState):
 
             cost = quantity * item.getPrice()
             if hasattr(item, "ticketType"):
-                print(" + " + item.movieName + " - " + str(quantity) 
+                print(" + " + item.getMovieInfo() + " - " + str(quantity) 
                 + " x €" + '{0:.2f}'.format(item.getPrice()) 
                 + " = €" + '{0:.2f}'.format(cost))
             else:

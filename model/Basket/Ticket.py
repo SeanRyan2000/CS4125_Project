@@ -3,7 +3,6 @@ class Ticket:
         self.movieName = movie.getMovieName()
         self.movieLength = movie.getMovieLength()
         self.movieType = movie.getMovieType()
-        self.screenNum = movie.getScreenNum()
         self.ticketType = ticketType
     
     ##Get the Price for Ticket
@@ -23,6 +22,5 @@ class Ticket:
 
         return price
 
-    ##Print Ticket Information
-    def returnTicketInfo(self):
-        return "Movie: {}\n Time: {}\n Type: {}\n Screen: {}\n Ticket: {}\n Price: {}\n".format(self.movieName, self.movieLength, self.movieType, self.screenNum, self.ticketType, self.price)
+    def getMovieInfo(self) -> str:
+        return "{} ({})".format(self.movieName, self.movieLength)

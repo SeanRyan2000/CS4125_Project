@@ -1,11 +1,10 @@
 from Movie.NewReleaseMovie import NewReleaseMovie
 from Movie.StandardMovie import StandardMovie
 from Movie.ChildrensMovie import ChildrensMovie
-from Concessions.Popcorn import RegularPopcorn, LargePopcorn
-from Concessions.AddOns import AddDrink, AddSweets, AddIceCream, AddHotDog
 from Ticket import Ticket
-from Basket import Basket
-from Basket import BasketEmpty
+from Concessions.Popcorn import *
+from Concessions.AddOns import *
+from Basket import *
 
 movie1 = NewReleaseMovie("Where the Crawdads Sing", 123, 20)
 movie2 = ChildrensMovie("Cars 2", 131, 20)
