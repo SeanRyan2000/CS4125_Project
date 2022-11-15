@@ -133,13 +133,24 @@ class ItemsInBasket(BasketState):
         self.basket.items = {}
         self.basket.setBasket(BasketEmpty())
 
+    #Update class to work for Ticket class
     def viewBasket(self) -> None:
         totalCost = 0
         print("---------------------")
         for item in self.basket.items:
             quantity = self.basket.items[item]
-            cost = quantity * item.price
-            print(" + " + item.name + " - " + str(quantity) + " x €" + '{0:.2f}'.format(item.price) + " = €" + '{0:.2f}'.format(cost))
+
+            cost = quantity * item.getPrice()
+            if hasattr(item, "ticketType"):
+                print(" + " + item.movieName + " - " + str(quantity) 
+                + " x €" + '{0:.2f}'.format(item.getPrice()) 
+                + " = €" + '{0:.2f}'.format(cost))
+            else:
+                print(" + " + item.getDescription() +  " - " + str(quantity)
+                + " x €" + '{0:.2f}'.format(item.getPrice())
+                + " = €" + '{0:.2f}'.format(cost))
+                pass
+
             totalCost += cost
             
         print("---------------------")  

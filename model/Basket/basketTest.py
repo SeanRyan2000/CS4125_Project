@@ -1,29 +1,31 @@
-from Item import Item
+from Movies.NewReleaseMovie import NewReleaseMovie
+from Movies.StandardMovie import StandardMovie
+from Movies.ChildrensMovie import ChildrensMovie
+from Concessions.Popcorn import RegularPopcorn, LargePopcorn
+from Concessions.AddOns import AddDrink, AddSweets, AddIceCream, AddHotDog
+from Ticket import Ticket
 from Basket import Basket
 from Basket import BasketEmpty
 
-tomatoSoup = Item("Tomato Soup","200mL can", 0.70)
-spaghetti = Item("Spaghetti","500g pack", 1.10)
-blackOlives = Item("Black Olives Jar","200g Jar", 2.10)
-mozarella = Item("Mozarella","100g", 1.50)
-gratedCheese = Item("Grated Cheese","100g",2.20)
+movie1 = NewReleaseMovie("Where the Crawdads Sing", 123, 20)
+movie2 = ChildrensMovie("Cars 2", 131, 20)
+movie3 = StandardMovie("Shawshank Redemption", 141, 20)
+
+ticket1 = Ticket(movie1, "student")
+ticket2 = Ticket(movie2, "kids")
+ticket3 = Ticket(movie3, "student")
+
+popcorn1 = RegularPopcorn()
+popcorn2 = LargePopcorn()
+popcorn1 = AddIceCream(AddDrink(popcorn1))
+popcorn2 = AddHotDog(AddSweets(popcorn2))
 
 myBasket = Basket(BasketEmpty())
 
-myBasket.clearBasket()
-
-myBasket.addItem(tomatoSoup, 4)
-myBasket.addItem(blackOlives, 1)
-myBasket.addItem(mozarella, 2)
-myBasket.addItem(tomatoSoup, 6)
-
-myBasket.removeItem(tomatoSoup, 1)
-
-myBasket.viewBasket()
-
-myBasket.removeItem(tomatoSoup, 4)
-myBasket.removeItem(blackOlives, 1)
-myBasket.removeItem(mozarella, 2)
-myBasket.removeItem(tomatoSoup, 6)
+myBasket.addItem(ticket1, 1)
+myBasket.addItem(ticket2, 2)
+myBasket.addItem(ticket3, 1)
+myBasket.addItem(popcorn1, 2)
+myBasket.addItem(popcorn2)
 
 myBasket.viewBasket()
