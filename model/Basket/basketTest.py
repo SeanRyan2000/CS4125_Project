@@ -1,6 +1,6 @@
-from Movies.NewReleaseMovie import NewReleaseMovie
-from Movies.StandardMovie import StandardMovie
-from Movies.ChildrensMovie import ChildrensMovie
+from Movie.NewReleaseMovie import NewReleaseMovie
+from Movie.StandardMovie import StandardMovie
+from Movie.ChildrensMovie import ChildrensMovie
 from Concessions.Popcorn import RegularPopcorn, LargePopcorn
 from Concessions.AddOns import AddDrink, AddSweets, AddIceCream, AddHotDog
 from Ticket import Ticket
