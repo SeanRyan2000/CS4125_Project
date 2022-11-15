@@ -1,6 +1,9 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
+"""
+Basket Context Class
+"""
 class Basket:
     _basketState = None
 
@@ -33,7 +36,9 @@ class Basket:
         self._basketState.getTotalCost()
 
 
-
+"""
+Abstract Basket State Class
+"""
 class BasketState(ABC):
 
     @property
@@ -69,6 +74,9 @@ class BasketState(ABC):
         pass
 
 
+"""
+Concrete Basket Empty Class
+"""
 class BasketEmpty(BasketState):
 
     def addItem(self, item, quantity = 1) -> None:
@@ -90,6 +98,10 @@ class BasketEmpty(BasketState):
     def getTotalCost(self) -> None:
         print("There are no items in your basket")
 
+
+"""
+Concrete Items in Basket Class
+"""
 class ItemsInBasket(BasketState):
    
     def addItem(self, item, quantity = 1) -> None:
@@ -127,11 +139,11 @@ class ItemsInBasket(BasketState):
         for item in self.basket.items:
             quantity = self.basket.items[item]
             cost = quantity * item.price
-            print(" + " + item.name + " - " + str(quantity) + " x £" + '{0:.2f}'.format(item.price) + " = £" + '{0:.2f}'.format(cost))
+            print(" + " + item.name + " - " + str(quantity) + " x €" + '{0:.2f}'.format(item.price) + " = €" + '{0:.2f}'.format(cost))
             totalCost += cost
             
         print("---------------------")  
-        print(" = £" + '{0:.2f}'.format(totalCost))
+        print(" = €" + '{0:.2f}'.format(totalCost))
         print("---------------------")
 
     def getTotalCost(self) -> None:
