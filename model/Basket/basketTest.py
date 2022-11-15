@@ -51,3 +51,5 @@ myBasket.addItem(popcorn2)
 ##View Baseket##
 myBasket.viewBasket()
 INVOKER.show_history()
+INVOKER.replay_last(1)
+INVOKER.show_history()

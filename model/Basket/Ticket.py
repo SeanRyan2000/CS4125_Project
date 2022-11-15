@@ -74,7 +74,7 @@ class Invoker:
     def replay_last(self, number_of_commands):
         commands = self._history[-number_of_commands:]
         for command in commands:
-            self._commands[command[1].execute()]
+            self._commands[command[1]].execute()
 
 
 """
