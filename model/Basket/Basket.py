@@ -23,8 +23,8 @@ class Basket:
     def removeItem(self, item, quantity = 0):
         self._basketState.removeItem(item, quantity)
 
-    def updateItem(self):
-        self._basketState.updateItem()
+    def updateItem(self, item, quantity):
+        self._basketState.updateItem(item, quantity)
 
     def clearBasket(self):
         self._basketState.clearBasket()
@@ -58,7 +58,7 @@ class BasketState(ABC):
         pass
 
     @abstractmethod
-    def updateItem(self) -> None:
+    def updateItem(self, item, quantity) -> None:
         pass
 
     @abstractmethod
@@ -121,7 +121,7 @@ class ItemsInBasket(BasketState):
                     self.basket.items.pop(item, None)
 
         if len(self.basket.items) == 0:
-            self.order.setOrderState(BasketEmpty())
+            self.basket.setBasket(BasketEmpty())
 
     def updateItem(self, item, quantity) -> None:
         if quantity > 0: 
@@ -131,7 +131,7 @@ class ItemsInBasket(BasketState):
 
     def clearBasket(self) -> None:
         self.basket.items = {}
-        self.order.setOrderState(BasketEmpty())
+        self.basket.setBasket(BasketEmpty())
 
     def viewBasket(self) -> None:
         totalCost = 0
