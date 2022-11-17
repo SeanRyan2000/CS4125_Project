@@ -14,8 +14,11 @@ class Movie(ABC):
     def getMovieName(self):
         return str(self.title)
 
-    def getMovieLength(self):
+    def getFormattedMovieLength(self):
         return "{}:{}".format(self.length // 60, str(self.length % 60).zfill(2))
+
+    def getMovieLength(self):
+        return self.length
 
     @abstractmethod
     def getMovieType(self):
@@ -28,4 +31,4 @@ class Movie(ABC):
         return self.tickets - numberOfSeats
 
     def printMovie(self) -> str:
-        return "{} ({})".format(self.title, self.getMovieLength())
+        return "{} ({})".format(self.title, self.getFormattedMovieLength())

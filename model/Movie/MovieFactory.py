@@ -7,10 +7,10 @@ class MovieFactory:
         movie = None
 
         if request.get('type') == 'NewReleaseMovie':
-            movie = NewReleaseMovie.NewReleaseMovie(request.get('movie_name'), request.get('movie_length'), request.get('tickets'))
+            movie = NewReleaseMovie.NewReleaseMovie(request.get('title'), request.get('movie_length'), request.get('tickets'))
         elif request.get('type') == 'ChildrensMovie':
-            movie = ChildrensMovie.ChildrensMovie(request.get('movie_name'), request.get('movie_length'), request.get('tickets'))
+            movie = ChildrensMovie.ChildrensMovie(request.get('title'), request.get('movie_length'), request.get('tickets'))
         elif request.get('type') == 'StandardMovie':
-            movie = StandardMovie.StandardMovie(request.get('movie_name'), request.get('movie_length'), request.get('tickets'))
+            movie = StandardMovie.StandardMovie(request.get('title'), request.get('movie_length'), request.get('tickets'))
 
         return movie
