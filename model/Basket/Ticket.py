@@ -141,7 +141,7 @@ class main:
         # Register the commands with the invoker
         INVOKER = Invoker()
         INVOKER.register("1", COMMAND_KIDS)
-        INVOKER.register("2", COMMAND_STUDENT)
+        INVOKER.register("2", COMMAND_STUDENT) 
         INVOKER.register("3", COMMAND_ADULT)
 
         # Execute the commands that are registered on the Invoker
