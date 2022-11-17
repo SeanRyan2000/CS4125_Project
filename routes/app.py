@@ -145,10 +145,8 @@ def admin():
 @app.route('/admin/add_movie', methods=['POST'])
 def add_movie():
 
-    if request.form.to_dict() is not None:
+    if len(request.form.to_dict()) != 0:
         movieToBeAdded = movieFactory.createMovie(request.form.to_dict())
-        print(request.form.to_dict())
-        print(movieToBeAdded)
         addMovieToCSV(movieToBeAdded)
     else:
         print('error')
