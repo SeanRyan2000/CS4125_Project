@@ -2,8 +2,6 @@ from flask import Flask, render_template, redirect, request, url_for, session
 import os.path
 import pandas 
 import pandas as pd
-
- 
 import csv
 
 import os, sys
@@ -45,9 +43,9 @@ if __name__ == "__main__":
 @app.route('/movies')
 def movie():
     
-        data = pd.read_csv(MOVIE_CSV_PATH_STRING)
-        movieName = data['TITLE'].tolist()
-        return render_template('Movie.html',  movieName = movieName)
+        df = pd.read_csv(MOVIE_CSV_PATH_STRING, usecols=['TITLE','TICKETS'])
+        movieNameAndTicket = df.set_index('TITLE')['TICKETS'].to_dict()
+        return render_template('Movie.html',  movieNameAndTicket = movieNameAndTicket)
 
 @app.route('/')
 def home():
