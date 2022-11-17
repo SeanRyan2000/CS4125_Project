@@ -9,3 +9,6 @@ class ChildrensMovie(Movie.Movie):
     def getMovieType(self):
         return self.type
 
+    def __call__(self):
+        return self
+

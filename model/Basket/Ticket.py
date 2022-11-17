@@ -6,7 +6,7 @@ from abc import ABCMeta, abstractmethod
 class Ticket:
     def __init__(self, movie, ticketType):
         self.movieName = movie.getMovieName()
-        self.movieLength = movie.getMovieLength()
+        self.movieLength = movie.getFormattedMovieLength()
         self.movieType = movie.getMovieType()
         self.ticketType = ticketType
     
