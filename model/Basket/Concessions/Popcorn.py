@@ -1,0 +1,42 @@
+import six
+from abc import abstractmethod, ABCMeta
+
+"""
+Popcorn:
+    Regular ->      6
+    Large ->        8
+
+    add Drink:      +3
+    add Sweets:     +2
+    add IceCream:   +4
+    add HotDog:     +5
+"""
+
+@six.add_metaclass(ABCMeta)
+class Popcorn(object):
+
+    @abstractmethod
+    def getDescription(self) -> None:
+        pass
+
+    @abstractmethod
+    def getPrice(self) -> None:
+        pass
+
+
+class RegularPopcorn(Popcorn):
+
+    def getDescription(self) -> None:
+        return "Regular Popcorn"
+
+    def getPrice(self) -> None:
+        return 6
+
+
+class LargePopcorn(Popcorn):
+
+    def getDescription(self) -> None:
+        return "Large Popcorn"
+
+    def getPrice(self) -> None:
+        return 8
