@@ -6,19 +6,22 @@
 
 <div class="container mt-4">
 
-    {% for row in movieName |batch(3) %}
+    {% for row in movieNameAndTicket |batch(3) %}
     <div class="row g-3">
 
         {% for column in row %}
 
         <div class="col-4 mb-2">
             <div class="card">
-                <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
                 <div class="card-body">
-                  <p class="card-text text-center">{{column }}</p> 
+                  <p class="card-text text-center">{{column}}</p>
                   <div class="text-center">
+                <form action="/buyTicketScreen" method="POST">
+                    <input type="hidden" name="movieName" value="{{column}}">
+                    <button type="submit" class="btn btn-primary">Buy Ticket</button>
+                </form>
 
-                  <button type="button" class="btn btn-primary">Buy Now</button>
+<!--                  <button type="button" class="btn btn-primary">Buy Ticket</button>-->
                 </div>
 
                 </div>

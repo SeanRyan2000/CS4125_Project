@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="currentTicket" style="position: absolute;
+                                  left: 150px;
+                                  width: 50%;
+                                  height: 120px;">
+<section style="background-color: white;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <h2 style="text-align: center;">{{ ticket.get('movieName') }}</h2>
+                        <br>
+
+                        <h4>Ticket Type: {{ ticket.get('ticketType') }} </h4>
+                        <h4>No. of tickets: {{ ticket.get('numberOfTickets') }} </h4>
+                        <h4>Price: €{{ ticket.get('price') }} </h4>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+{% endblock %}

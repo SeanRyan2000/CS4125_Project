@@ -5,6 +5,9 @@ import pandas as pd
 import csv
 
 import os, sys
+
+from CS4125_Project.model.Basket.Ticket import Ticket
+
 currDir = os.path.dirname(os.path.realpath(__file__))
 rootDir = os.path.abspath(os.path.join(currDir, '..'))
 if rootDir not in sys.path: # add parent dir to paths
@@ -20,6 +23,7 @@ from model.Register import validatePasswordStrength, emailValidator, ensurePassw
 from model.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
 
 from model.Movie import MovieFactory
+from model.Basket.TicketFactory import TicketFactory
 
 movieFactory = MovieFactory.MovieFactory()
 
@@ -47,30 +51,41 @@ if __name__ == "__main__":
 @app.route('/movies')
 def movie():
     
-        df = pd.read_csv(MOVIE_CSV_PATH_STRING, usecols=['TITLE','TICKETS'])
+        df = pd.read_csv(MOVIE_CSV_PATH_STRING, usecols=['TITLE', 'TICKETS'])
         movieNameAndTicket = df.set_index('TITLE')['TICKETS'].to_dict()
-        return render_template('Movie.html',  movieNameAndTicket = movieNameAndTicket)
+        return render_template('Movie.html',  movieNameAndTicket=movieNameAndTicket)
+
+@app.route('/buyTicketScreen', methods=['POST'])
+def buyTicketScreen():
+
+    movie = request.form.to_dict().get('movieName')
+    # add movie name to session so that it can be used in the buyTicket function
+    session['movie'] = movie
+    print(session['movie'])
+    return render_template('buyTicketScreen.html', moivieName=movie)
+
+@app.route('/buyTicket', methods=['POST'])
+def buyTicket():
+
+    movie = movieFactory.createMovieFromCSV(session.get('movie'))
+    print(session.get('movie'))
+    ticket = Ticket(movie.getMovieName(), movie.getMovieLength(), movie.getMovieType(), request.form.get('tickets'), request.form.get('type'), 0)
+    TicketFactory.getTicketPrice(ticket)
+    print(request.form.get('tickets'))
+    ticket.price = ticket.price * int(request.form.get('tickets'))
+    Ticket.apply_multiplier(ticket)
+
+    session['ticket'] = ticket.__dict__  # to access the ticket object in addOns page
+    return render_template('basket.html', ticket=ticket)
+
+@app.route('/addOns', methods=['POST'])
+def addOns():
+    print(session.get('ticket'))
+    return render_template('addOns.html', ticket=session.get('ticket'))
 
 @app.route('/')
 def home():
     return render_template('home.html')
-
-# @app.route("/test", methods=['POST'])
-# def buy_ticket_for_movie():
-#
-#     df = pandas.read_csv(CSV_PATH_STRING)
-#     movieName = df['MOVIE'].tolist()
-#
-#     # Check which button was clicked on the movies page by reading the request form and getting the movie name from that
-#     # Finding the column index of the movie in the CSV file
-#     index = movieName.index(list(request.form.to_dict())[0])
-#
-#     # Decrease the ticket amount when a ticket is bought and update the CSV file
-#     df.at[index, 'TICKETS'] = df.at[index, 'TICKETS'] - 1
-#     df.to_csv(CSV_PATH_STRING, index=False)
-#
-#     return redirect('/movies')
-
 
 @app.route("/register", methods=['POST', 'GET'])
 def registration():
