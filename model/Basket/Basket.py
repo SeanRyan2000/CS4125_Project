@@ -180,4 +180,10 @@ class ItemsInBasket(BasketState):
         for item in self.basket._items:
             with open(PURCHASES_CSV_PATH_STRING, 'a') as file:
                 #oID, uID, tickets, quantity, time
-                file.write("\n" + self.basket.orderID + "," + str(userID) + "," + item.getDescription() + "," + str(item.getPrice()) + "," + date.today().strftime("%b-%d-%Y"))
+                file.write("\n" +
+                self.basket.orderID + "," +             #orderID
+                str(userID) + "," +                     #userID
+                item.getDescription() + ","  +          #item
+                str(self.basket._items[item]) + "," +   #quantity
+                str(item.getPrice()) + "," +            #price
+                date.today().strftime("%b-%d-%Y"))      #date
