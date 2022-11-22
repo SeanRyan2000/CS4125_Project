@@ -16,22 +16,6 @@ ticket1 = Ticket(movie1, "kids")
 ticket2 = Ticket(movie2, "student")
 ticket3 = Ticket(movie3, "adult")
 
-##Commands##
-COMMAND_KIDS = CommandSetKids(ticket1)
-COMMAND_STUDENT = CommandSetStudent(ticket2)
-COMMAND_ADULT = CommandSetAdult(ticket3)
-
-##Register with Invoker##
-INVOKER = Invoker()
-INVOKER.register("Kids", COMMAND_KIDS)
-INVOKER.register("Student", COMMAND_STUDENT)
-INVOKER.register("Adult", COMMAND_ADULT)
-
-##Execute Commands in Invoker##
-INVOKER.execute("Kids")
-INVOKER.execute("Student")
-INVOKER.execute("Adult")
-
 ##Concessions##
 popcorn1 = RegularPopcorn()
 popcorn2 = LargePopcorn()
@@ -50,6 +34,4 @@ myBasket.addItem(popcorn2)
 
 ##View Baseket##
 myBasket.viewBasket()
-INVOKER.show_history()
-INVOKER.replay_last(1)
-INVOKER.show_history()
+myBasket.recordPurchase(69124)

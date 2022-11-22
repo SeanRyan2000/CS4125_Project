@@ -1,5 +1,10 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from datetime import date
+import os
+import uuid
+
+PURCHASES_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\orderHistory.csv"
 
 """
 Basket Context Class
@@ -10,8 +15,7 @@ class Basket:
     def __init__(self, basketState: BasketState) -> None:
         self.setBasket(basketState)
         self._items = {}
-        self._commands = {}
-        self._history = []
+        self.orderID = str(uuid.uuid1())[0:6]	
 
     ##State Methods
     def setBasket(self, basketState: BasketState):
@@ -36,6 +40,9 @@ class Basket:
 
     def getTotalCost(self):
         self._basketState.getTotalCost()
+
+    def recordPurchase(self, userID):
+        self._basketState.recordPurchase(userID)
 
 
 """
@@ -75,6 +82,9 @@ class BasketState(ABC):
     def getTotalCost(self) -> None:
         pass
 
+    @abstractmethod
+    def recordPurchase(self, userID) -> None:
+        pass
 
 """
 Concrete Basket Empty Class
@@ -99,6 +109,9 @@ class BasketEmpty(BasketState):
 
     def getTotalCost(self) -> None:
         print("There are no items in your basket")
+
+    def recordPurchase(self, userID) -> None:
+        print("Nothing to record")
 
 
 """
@@ -141,18 +154,12 @@ class ItemsInBasket(BasketState):
         print("---------------------")
         for item in self.basket._items:
             quantity = self.basket._items[item]
-
             cost = quantity * item.getPrice()
-            if hasattr(item, "ticketType"):
-                print(" + " + item.getMovieInfo() + " - " + str(quantity) 
-                + " x €" + '{0:.2f}'.format(item.getPrice()) 
-                + " = €" + '{0:.2f}'.format(cost))
-            else:
-                print(" + " + item.getDescription() +  " - " + str(quantity)
-                + " x €" + '{0:.2f}'.format(item.getPrice())
-                + " = €" + '{0:.2f}'.format(cost))
-                pass
-
+            
+            print(" + " + item.getDescription() + " - " + str(quantity) 
+            + " x €" + '{0:.2f}'.format(item.getPrice()) 
+            + " = €" + '{0:.2f}'.format(cost))
+            
             totalCost += cost
             
         print("---------------------")  
@@ -168,3 +175,15 @@ class ItemsInBasket(BasketState):
             totalCost += cost
         
         return totalCost
+
+    def recordPurchase(self, userID):
+        for item in self.basket._items:
+            with open(PURCHASES_CSV_PATH_STRING, 'a') as file:
+                #oID, uID, tickets, quantity, time
+                file.write("\n" +
+                self.basket.orderID + "," +             #orderID
+                str(userID) + "," +                     #userID
+                item.getDescription() + ","  +          #item
+                str(self.basket._items[item]) + "," +   #quantity
+                str(item.getPrice()) + "," +            #price
+                date.today().strftime("%b-%d-%Y"))      #date
