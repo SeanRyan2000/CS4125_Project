@@ -9,10 +9,10 @@ class AddOns(Popcorn):
         self.concession = concession
 
     def getDescription(self):
-        return self.popcorn.getDescription()
+        return self.concession.getDescription()
 
     def getPrice(self):
-        return self.popcorn.getPrice()
+        return self.concession.getPrice()
         
 
 class AddDrink(AddOns):
