@@ -23,7 +23,7 @@ from model.Register import validatePasswordStrength, emailValidator, ensurePassw
 from model.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
 
 from model.Movie import MovieFactory
-from model.Basket.TicketFactory import TicketFactory
+from model.Basket import TicketFactory
 
 movieFactory = MovieFactory.MovieFactory()
 
