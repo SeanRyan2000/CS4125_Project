@@ -9,4 +9,6 @@ class Customer(User):
     def getUserType(self):
         return "Customer"
 
-        
+    def updateUser(self):
+
+        print(f'Email send to {self.getUserEmail()}. New Movie added.')

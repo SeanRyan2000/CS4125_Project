@@ -1,5 +1,13 @@
 from model.Movie import NewReleaseMovie, ChildrensMovie, StandardMovie
 
+from model.Admin.AddMovie import addMovieToCSV
+from model import Movie
+
+import os
+
+MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
+import pandas as pd
+
 class MovieFactory:
 
     def createMovie(self, request):
