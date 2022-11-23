@@ -8,13 +8,6 @@ class User(abc.ABC):
         self.password = password
         self.ID_number = ID_number
         self.isAdmin = isAdmin
-
-
-    # TODO LOOK AT WHY THIS IS CAUSING AN ERROR :(
-    ##Abstract Method to get user types
-    # @abstractmethod
-    # def getUserType(self):
-    #     pass
     
     ##Return the User Email
     @property
