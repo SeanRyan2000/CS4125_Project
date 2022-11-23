@@ -1,8 +1,10 @@
-from flask import Flask, render_template, redirect, request, url_for, session
+from flask import Flask, render_template, redirect, request, url_for, session, jsonify, render_template
+from decouple import config
 import os.path
 import pandas 
 import pandas as pd
 import csv
+import stripe
 
 import os, sys
 currDir = os.path.dirname(os.path.realpath(__file__))
@@ -25,6 +27,8 @@ movieFactory = MovieFactory.MovieFactory()
 
 from model.Admin.AddMovie import addNewReleaseMovie, addChildrensMovie, addStandardMovie, addMovieToCSV
 
+from model.Basket.Stripe_Basket import * #NEW#
+
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
 MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
@@ -35,14 +39,28 @@ app = Flask(__name__,
             )
 app.secret_key = 'secret key ahh'
 
+##Getting necessary stripe api keys from .env file
+stripe_keys = {
+    "secret_key": config("SECRET_KEY"),
+    "publishable_key": config("PUBLISHABLE_KEY"),
+    "endpoint_key": config("ENDPOINT_SECRET")
+}#NEW#
+
+stripe.api_key = stripe_keys["secret_key"]
 
 def __init__(self, name):
     self.app = Flask(name)
+
 
 # reading the data in the csv file
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.route("/config")
+def get_publishable_key():
+    stripe_config = {"publicKey": stripe_keys["publishable_key"]}
+    return jsonify(stripe_config)
 
 @app.route('/movies')
 def movie():
@@ -150,3 +168,45 @@ def add_movie():
         print('error')
 
     return redirect('/admin')
+
+@app.route("/create-checkout-session")
+def create_checkout_session():
+    domain_url = "http://127.0.0.1:5000/"
+    stripe.api_key = stripe_keys["secret_key"]
+    line_items = []    ##NEEDS UPDATE
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=domain_url + "cancelled",
+            payment_method_types=["card"],
+            mode="payment",
+            line_items = bask.getBasket() ##NEEDS UPDATE
+        )
+        return jsonify({"sessionId": checkout_session["id"]})
+    except Exception as e:
+        print(line_items)
+        return jsonify(error=str(e)), 403
+
+##Creating a webhook for realtime updates/ Maybe not necessary for our app?? 
+@app.route("/webhook", methods=["POST"])
+def stripe_webhook():
+    payload = request.get_data(as_text=True)
+    sig_header = request.headers.get("Stripe-Signature")
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, stripe_keys["endpoint_secret"]
+        )
+
+    except ValueError as e:
+        # Invalid payload
+        return "Invalid payload", 400
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return "Invalid signature", 400
+
+    # Handle the checkout.session.completed event
+    if event["type"] == "checkout.session.completed":
+        print("Payment was successful.")
+
+    return "Success", 200
