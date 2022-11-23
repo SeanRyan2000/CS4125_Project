@@ -24,7 +24,6 @@ jobs:
           args:
             -Dsonar.projectKey=CS4125_Project
             -Dsonar.organization=systems-analysis-design-project
-            #-Dsonar.sources=.
             -Dsonar.projectBaseDir=CS4125_Project/
             -Dsonar.scm.provider=git
             #-Dsonar.tests= # optional 
