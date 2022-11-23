@@ -10,10 +10,6 @@ rootDir = os.path.abspath(os.path.join(currDir, '..'))
 if rootDir not in sys.path: # add parent dir to paths
     sys.path.append(rootDir)
 
-
-# print(rootDir)
-# from CS4125_Project.model.Register import *
-# from Movie import Movie
 from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
     registerNewUser, checkIfEmailExists
 
@@ -54,22 +50,6 @@ def movie():
 @app.route('/')
 def home():
     return render_template('home.html')
-
-# @app.route("/test", methods=['POST'])
-# def buy_ticket_for_movie():
-#
-#     df = pandas.read_csv(CSV_PATH_STRING)
-#     movieName = df['MOVIE'].tolist()
-#
-#     # Check which button was clicked on the movies page by reading the request form and getting the movie name from that
-#     # Finding the column index of the movie in the CSV file
-#     index = movieName.index(list(request.form.to_dict())[0])
-#
-#     # Decrease the ticket amount when a ticket is bought and update the CSV file
-#     df.at[index, 'TICKETS'] = df.at[index, 'TICKETS'] - 1
-#     df.to_csv(CSV_PATH_STRING, index=False)
-#
-#     return redirect('/movies')
 
 
 @app.route("/register", methods=['POST', 'GET'])
