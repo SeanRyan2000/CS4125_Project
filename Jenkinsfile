@@ -33,19 +33,6 @@ pipeline {
             }
         }
 
-
-        node {
-            stage('SCM') {
-                git 'https://github.com/foo/bar.git'
-            }
-            stage('SonarQube analysis') {
-                def scannerHome = tool 'SonarScanner 4.0';
-                withSonarQubeEnv('My SonarQube Server') { // If you have configured more than one global server connection, you can specify its name
-                sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-        }
-
     }
         // guide https://medium.com/@gustavo.guss/jenkins-sending-email-on-post-build-938b236545d2
     
