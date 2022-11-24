@@ -6,8 +6,6 @@ import os
 import uuid
 
 PURCHASES_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\orderHistory.csv"
-MOVIE_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\movies.csv"
-#MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
 #PURCHASES_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/orderHistory.csv'
 
 """
