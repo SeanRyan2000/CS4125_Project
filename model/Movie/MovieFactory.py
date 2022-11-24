@@ -22,3 +22,6 @@ class MovieFactory:
             movie = StandardMovie.StandardMovie(request.get('title'), request.get('movie_length'), request.get('tickets'))
 
         return movie
+
+
+# ensure title movie length and tickets are not empty

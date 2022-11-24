@@ -29,3 +29,5 @@ def addMovieToCSV(movie):
 
     # Observer design patter. Notify user when a new movie is added
     observable.notify_user()
+
+# Test add movie

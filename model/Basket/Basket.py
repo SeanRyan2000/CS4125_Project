@@ -2,9 +2,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import date
 import os
+import unittest
 import uuid
+import Ticket
 
-PURCHASES_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\orderHistory.csv"
+PURCHASES_CSV_PATH_STRING = str(os.path.abspath('../..')) + '/csv_files/orderHistory.csv'
 
 """
 Basket Context Class
@@ -187,3 +189,33 @@ class ItemsInBasket(BasketState):
                 str(self.basket._items[item]) + "," +   #quantity
                 str(item.getPrice()) + "," +            #price
                 date.today().strftime("%b-%d-%Y"))      #date
+
+
+
+# removing and adding
+
+# test is price is correct
+# Stripe test
+# order history csv file
+# 
+
+class testBasket(unittest.TestCase):
+    def testBasket(self):
+        basket = Basket(BasketEmpty())
+        basket.addItem(Ticket("Adult", 10))
+        basket.addItem(Ticket("Child", 5))
+        basket.addItem(Ticket("Child", 5))
+        basket.removeItem(Ticket("Child", 5))
+        basket.updateItem(Ticket("Adult", 10), 5)
+        basket.viewBasket()
+        print(self.assertEqual(basket.getTotalCost(), 500))
+        basket.clearBasket()
+        basket.viewBasket()
+        self.assertEqual(basket.getTotalCost(), 10)
+        basket.addItem(Ticket("Adult", 10))
+        basket.addItem(Ticket("Child", 5))
+        basket.recordPurchase(1)
+        basket.viewBasket()
+        self.assertEqual(basket.getTotalCost(), 15)
+testBasket()
+

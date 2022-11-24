@@ -40,3 +40,7 @@ def signInUser(email, password):
 
     current_user = Customer.User(getUserID(email), email, password, False)
     return current_user
+
+
+
+# test signIn pw

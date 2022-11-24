@@ -1,6 +1,7 @@
+import unittest
 import six
 from abc import ABCMeta
-from Concessions.Popcorn import Popcorn
+from Popcorn import LargePopcorn, Popcorn
 
 @six.add_metaclass(ABCMeta)
 class AddOns(Popcorn):
@@ -57,3 +58,13 @@ class AddHotDog(AddOns):
 
     def getPrice(self):
         return self.concession.getPrice() + 5
+
+# add a hot dog to a large popcorn
+class testAddHotDogToLargePopcorn(unittest.TestCase):
+    def testAddHotDogToLargePopcorn(self):
+        largePopcorn = LargePopcorn()
+        largePopcorn = AddHotDog(largePopcorn)
+        self.assertEqual(largePopcorn.getDescription(), "Large Popcorn + Hot Dog")
+        print(largePopcorn.getPrice())
+        print(self.assertEqual(largePopcorn.getPrice(), 13))
+testAddHotDogToLargePopcorn().testAddHotDogToLargePopcorn()

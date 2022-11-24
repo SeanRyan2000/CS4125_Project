@@ -71,4 +71,9 @@ def checkIfEmailExists(email):
     # returns true if email already exists in CSV file and false if it doesn't exist
     return email in df['EMAIL'].values
 
+# test
+# ensure this creates a new account in test database and delete after 
+# ensure password is hashed
+# ensure email is unique
+# ensure password is strong enough
 

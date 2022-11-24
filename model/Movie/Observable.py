@@ -16,3 +16,6 @@ class Observable():
     def notify_user(self):
         for email in self.userEmail:
             print("Email sent to: " + email)
+
+
+# test that the "email" is sent to all users
