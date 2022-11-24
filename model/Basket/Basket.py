@@ -1,10 +1,14 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import date
+import pandas as pd
 import os
 import uuid
 
 PURCHASES_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\orderHistory.csv"
+MOVIE_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\movies.csv"
+#MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
+#PURCHASES_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/orderHistory.csv'
 
 """
 Basket Context Class
@@ -187,3 +191,5 @@ class ItemsInBasket(BasketState):
                 str(self.basket._items[item]) + "," +   #quantity
                 str(item.getPrice()) + "," +            #price
                 date.today().strftime("%b-%d-%Y"))      #date
+
+        self._basket.clearBasket()
