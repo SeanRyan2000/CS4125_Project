@@ -1,14 +1,20 @@
-import model.Basket
-import pyTest
-from model.Movie.NewReleaseMovie import NewReleaseMovie
-from model.Movie.StandardMovie import StandardMovie
-from model.Movie.ChildrensMovie import ChildrensMovie
-from model.Basket.Concessions.Popcorn import *
-from model.Basket.Concessions.AddOns import *
-from model.Basket.Ticket import *
-from model.Basket.Basket import *
+import sys
+sys.path.insert(1, 'model')
+import Basket
+import pytest
 
-class TestCases(pyTest.TestCase):
+from Basket.Ticket import Ticket
+
+
+from Movie import NewReleaseMovie, ChildrensMovie, StandardMovie
+# from model.movie.NewReleaseMovie import NewReleaseMovie
+# from model.movie.StandardMovie import StandardMovie
+# from model.movie.ChildrensMovie import ChildrensMovie
+
+
+# import movie.NewReleaseMovie, ChildrensMovie, StandardMovie
+
+class TestCases():
     def test1(self):
         self.assertEqual(1, 1)
 
@@ -17,13 +23,13 @@ class TestCases(pyTest.TestCase):
 
     def addToMovieTest(self):
         ##Movies##
-        movie1 = NewReleaseMovie("Where the Crawdads Sing", 123, 20)
-        movie2 = ChildrensMovie("Cars 2", 131, 20)
-        movie3 = StandardMovie("Shawshank Redemption", 141, 20)
+        # movie1 = NewReleaseMovie("Where the Crawdads Sing", 123)
+        # movie2 = ChildrensMovie("Cars 2", 131)
+        movie3 = StandardMovie("Shawshank Redemption", 141)
 
         ##Tickets##
-        ticket1 = Ticket(movie1, "kids")
-        ticket2 = Ticket(movie2, "student")
+        # ticket1 = Ticket(movie1, "kids")
+        # ticket2 = Ticket(movie2, "student")
         ticket3 = Ticket(movie3, "adult")
 
         ##Concessions##
@@ -49,4 +55,4 @@ class TestCases(pyTest.TestCase):
 
 
 if __name__ == '__main__':
-    pyTest.main()
+    pytest.main()

@@ -1,7 +1,6 @@
-import model.Movie.Movie as Movie
+import Movie as Movie
 
-
-class StandardMovie(Movie.Movie):
+class StandardMovie(Movie):
 
     def __init__(self, title, length, tickets):
         super().__init__(title, length, tickets)

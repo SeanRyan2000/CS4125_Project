@@ -2,6 +2,7 @@ from model.Movie import NewReleaseMovie, ChildrensMovie, StandardMovie
 
 from model.Admin.AddMovie import addMovieToCSV
 from model import Movie
+import pytest
 
 import os
 
@@ -24,4 +25,9 @@ class MovieFactory:
         return movie
 
 
-# ensure title movie length and tickets are not empty
+def test_createMovie():
+    movieFactory = MovieFactory()
+    movie = movieFactory.createMovie({'type': 'NewReleaseMovie', 'title': 'Test', 'movie_length': 120, 'tickets': 100})
+    assert isinstance(movie, Movie.NewReleaseMovie.NewReleaseMovie)
+
+

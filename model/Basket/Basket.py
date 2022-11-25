@@ -208,7 +208,7 @@ class testBasket(unittest.TestCase):
         basket.removeItem(Ticket("Child", 5))
         basket.updateItem(Ticket("Adult", 10), 5)
         basket.viewBasket()
-        print(self.assertEqual(basket.getTotalCost(), 500))
+        self.assertEqual(basket.getTotalCost(), 50)
         basket.clearBasket()
         basket.viewBasket()
         self.assertEqual(basket.getTotalCost(), 10)

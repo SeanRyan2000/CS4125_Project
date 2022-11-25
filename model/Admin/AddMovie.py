@@ -31,3 +31,6 @@ def addMovieToCSV(movie):
     observable.notify_user()
 
 # Test add movie
+
+# create a test movie
+
