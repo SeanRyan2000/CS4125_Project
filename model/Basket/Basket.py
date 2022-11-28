@@ -1,14 +1,12 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import date
-import pandas as pd
 import os
 import uuid
 
 from flask import session
 
 PURCHASES_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\orderHistory.csv"
-#PURCHASES_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/orderHistory.csv'
 
 """
 Basket Context Class
@@ -226,11 +224,9 @@ class ItemsInBasket(BasketState):
             with open(PURCHASES_CSV_PATH_STRING, 'a') as file:
                 # oID, uID, tickets, quantity, time
                 file.write("\n" +
-                self.basket.orderID + "," +             #orderID
-                str(userID) + "," +                     #userID
-                item.getDescription() + ","  +          #item
-                str(self.basket._items[item]) + "," +   #quantity
-                str(item.getPrice()) + "," +            #price
-                date.today().strftime("%b-%d-%Y"))      #date
-
-        self._basket.clearBasket()
+                           self.basket.orderID + "," +  # orderID
+                           str(userID) + "," +  # userID
+                           item.getDescription() + "," +  # item
+                           str(self.basket._items[item]) + "," +  # quantity
+                           str(item.getPrice()) + "," +  # price
+                           date.today().strftime("%b-%d-%Y"))  # date
