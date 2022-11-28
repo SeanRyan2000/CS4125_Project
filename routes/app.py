@@ -139,7 +139,12 @@ def validateSignIn():
 
     session['signin'] = True
     print(session['signin'])
-    return render_template('base.html', data=session['signin'])
+    return render_template('home.html', data=session['signin'])
+
+@app.route('/logout')
+def logout():
+    session['signin'] = False
+    return render_template('home.html')
 
 @app.route("/registerUser", methods=['POST'])
 def registerUser():
@@ -163,6 +168,8 @@ def registerUser():
     registerNewUser(request.form.to_dict().get('email'), request.form.to_dict().get('psw'))
 
     return redirect('/home')
+
+
 
 @app.route('/home')
 def loginSuccessfully():
