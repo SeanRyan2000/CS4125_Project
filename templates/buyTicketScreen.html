@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="" style="background-color: white;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <h2 style="text-align: center;"> Buying ticket for <br> {{moivieName}}</h2>
+                        <br>
+
+                        <form action="/buyTicket" method="POST" name="buyTicket">
+
+                            <h4> Ticket Type</h4>
+                            <input type="radio" id="Child" name="type" value="Child" checked>
+                            <label for="NewReleaseMovie">Child</label>
+
+                            <input type="radio" id="Adult" name="type" value="Adult">
+                            <label for="ChildrensMovie">Adult</label>
+
+                            <input type="radio" id="Student" name="type" value="Student">
+                            <label for="StandardMovie">Student</label>
+                            <br>
+                            <br>
+                            <h4>Number of Tickets</h4>
+                            <input type="number" width="50" min="1" max="100" id="tickets" name="tickets"
+                                   class="form-control form-control-lg" required/>
+                            <br>
+                            <br>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Buy Ticket</button>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -2,11 +2,16 @@ from flask import Flask, render_template, redirect, request, session
 import os.path
 import pandas as pd
 import os, sys
+
 from model.Authentication.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual, registerNewUser, checkIfEmailExists
 from model.Authentication.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
 from model.Movie import MovieFactory
 from model.Admin.AddMovie import addMovieToCSV
-
+from CS4125_Project.model.Basket.Basket import Basket, BasketEmpty
+from CS4125_Project.model.Basket.Concessions.AddOns import AddIceCream, AddHotDog, AddDrink, AddSweets
+from CS4125_Project.model.Basket.Concessions.Popcorn import Popcorn, LargePopcorn
+from model.Basket.Concessions.ConcessionFactory import ConcessionFactory
+from CS4125_Project.model.Basket.Ticket import Ticket
 
 currDir = os.path.dirname(os.path.realpath(__file__))
 rootDir = os.path.abspath(os.path.join(currDir, '..'))
@@ -14,6 +19,7 @@ if rootDir not in sys.path: # add parent dir to paths
     sys.path.append(rootDir)
 
 movieFactory = MovieFactory.MovieFactory()
+concessionFactory = ConcessionFactory()
 
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
@@ -25,6 +31,7 @@ app = Flask(__name__,
             )
 app.secret_key = 'secret key ahh'
 
+myBasket = Basket(BasketEmpty())
 
 def __init__(self, name):
     self.app = Flask(name)
@@ -37,14 +44,66 @@ if __name__ == "__main__":
 @app.route('/movies')
 def movie():
     
-        df = pd.read_csv(MOVIE_CSV_PATH_STRING, usecols=['TITLE','TICKETS'])
+        df = pd.read_csv(MOVIE_CSV_PATH_STRING, usecols=['TITLE', 'TICKETS'])
         movieNameAndTicket = df.set_index('TITLE')['TICKETS'].to_dict()
-        return render_template('Movie.html',  movieNameAndTicket = movieNameAndTicket)
+        return render_template('Movie.html',  movieNameAndTicket=movieNameAndTicket)
+
+@app.route('/buyTicketScreen', methods=['POST'])
+def buyTicketScreen():
+
+    movie = request.form.to_dict().get('movieName')
+    # add movie name to session so that it can be used in the buyTicket function
+    session['movie'] = movie
+    print(session['movie'])
+    return render_template('buyTicketScreen.html', moivieName=movie)
+
+@app.route('/buyTicket', methods=['POST'])
+def buyTicket():
+
+    movie = movieFactory.createMovieFromCSV(session.get('movie'))
+    print(session.get('movie'))
+    ticket = Ticket(movie.getMovieName(), movie.getMovieType(), movie.getMovieLength(), 0, request.form.get('type'), 0)
+    # TicketFactory.getTicketPrice(ticket)
+    print('tickets ', request.form.get('tickets'))
+    ticket.numberOfTickets = int(request.form.get('tickets'))
+    ticket.price = ticket.getPrice() * int(request.form.get('tickets'))
+    print('ticket price ', ticket.price)
+    Ticket.getPrice(ticket)
+    myBasket.addItem(ticket)
+
+
+    # use ticket in addOns function
+
+    session['ticket'] = ticket.__dict__ # to access the ticket object in addOns page
+    return render_template('basket.html', ticket=ticket)
+
+@app.route('/addOns', methods=['POST'])
+def addOns():
+
+    print(session.get('ticket'))
+    return render_template('addOns.html', ticket=session.get('ticket'))
+
+@app.route('/buyAddOns', methods=['POST'])
+def buyAddOns():
+
+    popcorn = concessionFactory.createPopcorn(request.form.get('size'))
+    if isinstance(popcorn, LargePopcorn):
+        popcorn = AddIceCream(AddHotDog(AddDrink(popcorn)))
+    else :
+        popcorn = AddSweets(AddDrink(popcorn))
+
+    myBasket.addItem(popcorn)
+    # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\nBASKET: ', myBasket.viewBasket())
+    string = myBasket.formattedString()
+    print('SRTINTG', string)
+    return session.get('formattedString')
+    # return myBasket.viewBasket()
+    # return render_template('final_basket.html', basket=myBasket)
+
 
 @app.route('/')
 def home():
     return render_template('home.html')
-
 
 @app.route("/register", methods=['POST', 'GET'])
 def registration():
@@ -67,7 +126,12 @@ def validateSignIn():
 
     session['signin'] = True
     print(session['signin'])
-    return render_template('base.html', data=session['signin'])
+    return render_template('home.html', data=session['signin'])
+
+@app.route('/logout')
+def logout():
+    session['signin'] = False
+    return render_template('home.html')
 
 @app.route("/registerUser", methods=['POST'])
 def registerUser():
@@ -91,6 +155,8 @@ def registerUser():
     registerNewUser(request.form.to_dict().get('email'), request.form.to_dict().get('psw'))
 
     return redirect('/home')
+
+
 
 @app.route('/home')
 def loginSuccessfully():

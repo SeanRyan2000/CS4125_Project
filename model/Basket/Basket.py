@@ -5,19 +5,23 @@ import pandas as pd
 import os
 import uuid
 
+from flask import session
+
 PURCHASES_CSV_PATH_STRING = r"C:\Users\19255551\Desktop\ComputerScience\repos\CS4125_Project\csv_files\orderHistory.csv"
 #PURCHASES_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/orderHistory.csv'
 
 """
 Basket Context Class
 """
+
+
 class Basket:
     _basketState = None
 
     def __init__(self, basketState: BasketState) -> None:
         self.setBasket(basketState)
         self._items = {}
-        self.orderID = str(uuid.uuid1())[0:6]	
+        self.orderID = str(uuid.uuid1())[0:6]
 
     ##State Methods
     def setBasket(self, basketState: BasketState):
@@ -25,10 +29,10 @@ class Basket:
         self._basketState.basket = self
 
     ##Basket Methods
-    def addItem(self, item, quantity = 1):
+    def addItem(self, item, quantity=1):
         self._basketState.addItem(item, quantity)
 
-    def removeItem(self, item, quantity = 0):
+    def removeItem(self, item, quantity=0):
         self._basketState.removeItem(item, quantity)
 
     def updateItem(self, item, quantity):
@@ -46,10 +50,15 @@ class Basket:
     def recordPurchase(self, userID):
         self._basketState.recordPurchase(userID)
 
+    def formattedString(self):
+        self._basketState.formattedString()
+
 
 """
 Abstract Basket State Class
 """
+
+
 class BasketState(ABC):
 
     @property
@@ -81,28 +90,35 @@ class BasketState(ABC):
         pass
 
     @abstractmethod
-    def getTotalCost(self) -> None:
+    def getTotalCost(self) -> float:
         pass
 
     @abstractmethod
     def recordPurchase(self, userID) -> None:
         pass
 
+    @abstractmethod
+    def formattedString(self) -> str:
+        return 'TEST'
+
+
 """
 Concrete Basket Empty Class
 """
+
+
 class BasketEmpty(BasketState):
 
-    def addItem(self, item, quantity = 1) -> None:
+    def addItem(self, item, quantity=1) -> None:
         self.basket._items[item] = quantity
         self.basket.setBasket(ItemsInBasket())
 
     def removeItem(self, item, quantity) -> None:
         print("Cannot remove item, basket is empty")
-    
+
     def updateItem(self, item, quantity) -> None:
         print("No items in basket to update")
-  
+
     def clearBasket(self) -> None:
         print("Cannot clear basket, basket is empty")
 
@@ -115,24 +131,50 @@ class BasketEmpty(BasketState):
     def recordPurchase(self, userID) -> None:
         print("Nothing to record")
 
+    def formattedString(self) -> str:
+        return ("There are no items in your basket")
+
 
 """
 Concrete Items in Basket Class
 """
+
+
 class ItemsInBasket(BasketState):
-   
-    def addItem(self, item, quantity = 1) -> None:
+
+    def formattedString(self):
+
+        totalCost = 0
+        string = ""
+        for item in self.basket._items:
+            print('ITEM ', item.getDescription())
+            quantity = self.basket._items[item]
+            cost = quantity * item.getPrice()
+
+            string += " + " + item.getDescription() + " - " + str(quantity) + " x €" + '{0:.2f}'.format(
+                item.getPrice()) + " = €" + '{0:.2f}'.format(cost)
+
+            totalCost += cost
+
+        string += "---------------------"
+        string += " = €" + '{0:.2f}'.format(totalCost)
+        string += "---------------------"
+        print ('PRINTED STRING' ,string)
+        session['formattedString'] = string
+        return string
+
+    def addItem(self, item, quantity=1) -> None:
         if item in self.basket._items:
             self.basket._items[item] += quantity
-        else: 
+        else:
             self.basket._items[item] = quantity
 
-    def removeItem(self, item, quantity = 0) -> None:
-        if quantity<=0: 
+    def removeItem(self, item, quantity=0) -> None:
+        if quantity <= 0:
             self.basket._items.pop(item, None)
         else:
             if item in self.basket._items:
-                if quantity<self.basket._items[item]:
+                if quantity < self.basket._items[item]:
                     self.basket._items[item] -= quantity
                 else:
                     self.basket._items.pop(item, None)
@@ -141,7 +183,7 @@ class ItemsInBasket(BasketState):
             self.basket.setBasket(BasketEmpty())
 
     def updateItem(self, item, quantity) -> None:
-        if quantity > 0: 
+        if quantity > 0:
             self.basket._items[item] = quantity
         else:
             self.removeItem(item)
@@ -150,38 +192,39 @@ class ItemsInBasket(BasketState):
         self.basket._items = {}
         self.basket.setBasket(BasketEmpty())
 
-    #Update class to work for Ticket class
+    # Update class to work for Ticket class
     def viewBasket(self) -> None:
+
         totalCost = 0
         print("---------------------")
         for item in self.basket._items:
             quantity = self.basket._items[item]
             cost = quantity * item.getPrice()
-            
-            print(" + " + item.getDescription() + " - " + str(quantity) 
-            + " x €" + '{0:.2f}'.format(item.getPrice()) 
-            + " = €" + '{0:.2f}'.format(cost))
-            
+
+            print(" + " + item.getDescription() + " - " + str(quantity)
+                  + " x €" + '{0:.2f}'.format(item.getPrice())
+                  + " = €" + '{0:.2f}'.format(cost))
+
             totalCost += cost
-            
-        print("---------------------")  
+
+        print("---------------------")
         print(" = €" + '{0:.2f}'.format(totalCost))
         print("---------------------")
 
-    def getTotalCost(self) -> None:
+    def getTotalCost(self) -> float:
         totalCost = 0
-        
+
         for item in self.basket._items:
             quantity = self.basket._items[item]
             cost = quantity * item.price
             totalCost += cost
-        
+
         return totalCost
 
     def recordPurchase(self, userID):
         for item in self.basket._items:
             with open(PURCHASES_CSV_PATH_STRING, 'a') as file:
-                #oID, uID, tickets, quantity, time
+                # oID, uID, tickets, quantity, time
                 file.write("\n" +
                 self.basket.orderID + "," +             #orderID
                 str(userID) + "," +                     #userID

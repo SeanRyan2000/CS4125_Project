@@ -26,17 +26,17 @@ class Popcorn(object):
 
 class RegularPopcorn(Popcorn):
 
-    def getDescription(self) -> None:
+    def getDescription(self) -> str:
         return "Regular Popcorn"
 
-    def getPrice(self) -> None:
+    def getPrice(self) -> int:
         return 6
 
 
 class LargePopcorn(Popcorn):
 
-    def getDescription(self) -> None:
+    def getDescription(self) -> str:
         return "Large Popcorn"
 
-    def getPrice(self) -> None:
+    def getPrice(self) -> int:
         return 8

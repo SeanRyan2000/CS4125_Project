@@ -1,6 +1,10 @@
 import six
 from abc import ABCMeta
-from Concessions.Popcorn import Popcorn
+
+from CS4125_Project.model.Basket.Concessions.Popcorn import Popcorn
+
+
+# from Concessions.Popcorn import Popcorn
 
 @six.add_metaclass(ABCMeta)
 class AddOns(Popcorn):

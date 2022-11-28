@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 
+
 class Movie(ABC):
     def __init__(self, title, length, tickets):
         self.title = title
