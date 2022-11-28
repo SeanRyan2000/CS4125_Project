@@ -9,10 +9,10 @@ class AddOns(Popcorn):
         self.concession = concession
 
     def getDescription(self):
-        return self.popcorn.getDescription()
+        return self.concession.getDescription()
 
     def getPrice(self):
-        return self.popcorn.getPrice()
+        return self.concession.getPrice()
         
 
 class AddDrink(AddOns):
@@ -20,7 +20,7 @@ class AddDrink(AddOns):
         AddOns.__init__(self, concession)
 
     def getDescription(self):
-        return self.concession.getDescription() + ", Drink"
+        return self.concession.getDescription() + " + Drink"
 
     def getPrice(self):
         return self.concession.getPrice() + 3
@@ -31,7 +31,7 @@ class AddSweets(AddOns):
         AddOns.__init__(self, concession)
 
     def getDescription(self):
-        return self.concession.getDescription() + ", Sweets"
+        return self.concession.getDescription() + " + Sweets"
 
     def getPrice(self):
         return self.concession.getPrice() + 2
@@ -42,7 +42,7 @@ class AddIceCream(AddOns):
         AddOns.__init__(self, concession)
 
     def getDescription(self):
-        return self.concession.getDescription() + ", Ice Cream"
+        return self.concession.getDescription() + " + Ice Cream"
 
     def getPrice(self):
         return self.concession.getPrice() + 4
@@ -53,7 +53,7 @@ class AddHotDog(AddOns):
         AddOns.__init__(self, concession)
 
     def getDescription(self):
-        return self.concession.getDescription() + ", Hot Dog"
+        return self.concession.getDescription() + " + Hot Dog"
 
     def getPrice(self):
         return self.concession.getPrice() + 5

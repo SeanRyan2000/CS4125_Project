@@ -5,25 +5,17 @@ import pandas as pd
 import csv
 
 import os, sys
-
-from CS4125_Project.model.Basket.Ticket import Ticket
-
 currDir = os.path.dirname(os.path.realpath(__file__))
 rootDir = os.path.abspath(os.path.join(currDir, '..'))
 if rootDir not in sys.path: # add parent dir to paths
     sys.path.append(rootDir)
 
-
-# print(rootDir)
-# from CS4125_Project.model.Register import *
-# from Movie import Movie
 from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
     registerNewUser, checkIfEmailExists
 
 from model.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
 
 from model.Movie import MovieFactory
-from model.Basket import TicketFactory
 
 movieFactory = MovieFactory.MovieFactory()
 
@@ -51,41 +43,14 @@ if __name__ == "__main__":
 @app.route('/movies')
 def movie():
     
-        df = pd.read_csv(MOVIE_CSV_PATH_STRING, usecols=['TITLE', 'TICKETS'])
+        df = pd.read_csv(MOVIE_CSV_PATH_STRING, usecols=['TITLE','TICKETS'])
         movieNameAndTicket = df.set_index('TITLE')['TICKETS'].to_dict()
-        return render_template('Movie.html',  movieNameAndTicket=movieNameAndTicket)
-
-@app.route('/buyTicketScreen', methods=['POST'])
-def buyTicketScreen():
-
-    movie = request.form.to_dict().get('movieName')
-    # add movie name to session so that it can be used in the buyTicket function
-    session['movie'] = movie
-    print(session['movie'])
-    return render_template('buyTicketScreen.html', moivieName=movie)
-
-@app.route('/buyTicket', methods=['POST'])
-def buyTicket():
-
-    movie = movieFactory.createMovieFromCSV(session.get('movie'))
-    print(session.get('movie'))
-    ticket = Ticket(movie.getMovieName(), movie.getMovieLength(), movie.getMovieType(), request.form.get('tickets'), request.form.get('type'), 0)
-    TicketFactory.getTicketPrice(ticket)
-    print(request.form.get('tickets'))
-    ticket.price = ticket.price * int(request.form.get('tickets'))
-    Ticket.apply_multiplier(ticket)
-
-    session['ticket'] = ticket.__dict__  # to access the ticket object in addOns page
-    return render_template('basket.html', ticket=ticket)
-
-@app.route('/addOns', methods=['POST'])
-def addOns():
-    print(session.get('ticket'))
-    return render_template('addOns.html', ticket=session.get('ticket'))
+        return render_template('Movie.html',  movieNameAndTicket = movieNameAndTicket)
 
 @app.route('/')
 def home():
     return render_template('home.html')
+
 
 @app.route("/register", methods=['POST', 'GET'])
 def registration():

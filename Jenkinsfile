@@ -27,21 +27,8 @@ pipeline {
                 echo 'Testing..'
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
-
-    }
-        // guide https://medium.com/@gustavo.guss/jenkins-sending-email-on-post-build-938b236545d2
-    
-        post {
-            always {
-                echo 'Send email'
-                // emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
-            }
-        }
         
+
+    }   
     
 }
