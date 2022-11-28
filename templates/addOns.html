@@ -19,6 +19,40 @@
                         <h4>Ticket Type: {{ ticket.get('ticketType') }} </h4>
                         <h4>No. of tickets: {{ ticket.get('numberOfTickets') }} </h4>
                         <h4>Price: €{{ ticket.get('price') }} </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+<!-- put this div beside previous div-->
+<div class="addOns" style="position: absolute;
+                           left: 800px;
+                           width: 50%;
+                           height: 120px;">
+<section class="" style="background-color: white;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <h2 style="text-align: center;"> Combo Meal<h2>
+                        <br>
+
+                        <form action="/buyAddOns" method="POST" name="buyAddOns">
+                            <h4> Ticket Type</h4>
+                            <input type="radio" id="regular" name="size" value="regular" checked>
+                            <label for="Regular">Regular</label>
+                            <br>
+                            <input type="radio" id="large" name="type" value="large">
+                            <label for="Large">Large</label>
+                            <br>
+                            <br>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Add Combo to Basket</button>
+                        </form>
 
 
                     </div>

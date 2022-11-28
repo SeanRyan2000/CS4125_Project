@@ -9,29 +9,31 @@
                 <div class="card shadow-2-strong" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center">
 
+                        <h4> {{basket.formattedString()}}</h4>
 
                         <h3 class="mb-5">Basket</h3>
                         <form action="/addOns" method="POST" name="purchaseTicket">
                             <div class="form-outline mb-4">
-                                <h4>Movie: {{ticket.movieName}}</h4>
+                                <h4>Movie: {{ticket.get('movieName')}}</h4>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <h4>Ticket Type: {{ticket.ticketType}}</h4>
+                                <h4>Ticket Type: {{ticket.get('ticketType')}}</h4>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <h4>Movie Category: {{ticket.movieType}}</h4>
+                                <h4>Movie Category: {{ticket.get('movieType')}}</h4>
                             </div>
 
+
                             <div class="form-outline mb-4">
-                                <h4>Price: €{{ticket.getMoviePrice()}}</h4>
+                                <h4>Price: €{{ticket.get('price')}}</h4>
                             </div>
 
 
                         <form action="{{ url_for('registration') }}">
                             <input type="submit" class="btn btn-lg btn-block btn-primary"
-                                   style="background-color: #3b5998;" value="Buy Ticket">
+                                   style="background-color: #3b5998;" value="Checkout">
                         </form>
 
                     </div>
