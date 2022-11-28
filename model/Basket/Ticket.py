@@ -1,26 +1,31 @@
-class Ticket:        
-    def __init__(self, movie, ticketType):
-        self.movieName = movie.getMovieName()
-        self.movieLength = movie.getFormattedMovieLength()
-        self.movieType = movie.getMovieType()
+class Ticket:
+    def __init__(self, movieName, movieType, movieLength, numberOfTickets, ticketType, price):
+        self.movieName = movieName
+        self.movieType = movieType
+        self.movieLength = movieLength
+        self.numberOfTickets = numberOfTickets
         self.ticketType = ticketType
-        self.price = 0
+        self.price = price
+
+    def getMoviePrice(self):
+        # return price with two decimal places
+        return "{:.2f}".format(self.price)
 
     def getDescription(self):
-        return "[{}] {} ({})".format(self.movieType.capitalize(), self.movieName, self.movieLength)
+        return "[{}] {}".format(self.movieName, self.ticketType)
 
-    #Get the Price for Ticket
+    # Get the Price for Ticket
     def getPrice(self):
-        if self.ticketType == "kids":
+        if self.ticketType == "Child":
             self.price = 8
-        elif self.ticketType == "student":
+        elif self.ticketType == "Student":
             self.price = 10
-        elif self.ticketType == "adult":
+        else:
             self.price = 12
 
         if self.movieType == "childrens":
             self.price = self.price * 0.8
         elif self.movieType == "new":
             self.price = self.price * 1.2
-        
+
         return self.price
