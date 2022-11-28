@@ -25,7 +25,11 @@ def addStandardMovie(title, length, tickets):
 def addMovieToCSV(movie):
 
     with open(MOVIE_CSV_PATH_STRING, 'a') as file:
-        file.write("\n" + movie.getMovieName() + "," + str(movie.getMovieLength()) + "," + str(movie.getMovieType()) + "," + str(movie.getTicketsLeft()))
+        file.write("\n" + 
+        movie.getMovieName() + "," + 
+        str(movie.getMovieLength()) + "," + 
+        str(movie.getMovieType()) + "," + 
+        str(movie.getTicketsLeft()))
 
     # Observer design patter. Notify user when a new movie is added
     observable.notify_user()

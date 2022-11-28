@@ -1,14 +1,16 @@
-from flask import Flask, render_template, redirect, request, url_for, session
+from flask import Flask, render_template, redirect, request, session
 import os.path
-import pandas 
 import pandas as pd
-import csv
-
 import os, sys
 
+from model.Authentication.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual, registerNewUser, checkIfEmailExists
+from model.Authentication.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
+from model.Movie import MovieFactory
+from model.Admin.AddMovie import addMovieToCSV
 from CS4125_Project.model.Basket.Basket import Basket, BasketEmpty
 from CS4125_Project.model.Basket.Concessions.AddOns import AddIceCream, AddHotDog, AddDrink, AddSweets
 from CS4125_Project.model.Basket.Concessions.Popcorn import Popcorn, LargePopcorn
+from model.Basket.Concessions.ConcessionFactory import ConcessionFactory
 from CS4125_Project.model.Basket.Ticket import Ticket
 
 currDir = os.path.dirname(os.path.realpath(__file__))
@@ -16,23 +18,8 @@ rootDir = os.path.abspath(os.path.join(currDir, '..'))
 if rootDir not in sys.path: # add parent dir to paths
     sys.path.append(rootDir)
 
-
-# print(rootDir)
-# from CS4125_Project.model.Register import *
-# from Movie import Movie
-from model.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual,\
-    registerNewUser, checkIfEmailExists
-
-from model.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
-
-from model.Movie import MovieFactory
-from model.Basket import TicketFactory
-from model.Basket.Concessions.ConcessionFactory import ConcessionFactory
-
 movieFactory = MovieFactory.MovieFactory()
 concessionFactory = ConcessionFactory()
-
-from model.Admin.AddMovie import addNewReleaseMovie, addChildrensMovie, addStandardMovie, addMovieToCSV
 
 TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
