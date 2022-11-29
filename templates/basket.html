@@ -25,14 +25,18 @@
                             </div>
 
                             <div class="form-outline mb-4">
-                                <h4>Price: €{{ticket.getMoviePrice()}}</h4>
+                                <h4>Price per Ticket: €{{ticket.getMoviePrice()/ticket.getNumberOfTickets()}}</h4>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <h4>Subtotal: €{{ticket.getMoviePrice()}}</h4>
                             </div>
 
 
-                        <form action="{{ url_for('registration') }}">
-                            <input type="submit" class="btn btn-lg btn-block btn-primary"
-                                   style="background-color: #3b5998;" value="Buy Ticket">
-                        </form>
+                            <form action="{{ url_for('registration') }}">
+                                <input type="submit" class="btn btn-lg btn-block btn-primary"
+                                       style="background-color: #3b5998;" value="Buy Ticket">
+                            </form>
 
                     </div>
                 </div>

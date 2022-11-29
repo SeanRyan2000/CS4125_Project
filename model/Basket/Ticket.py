@@ -9,7 +9,10 @@ class Ticket:
 
     def getMoviePrice(self):
         # return price with two decimal places
-        return "{:.2f}".format(self.price)
+        return float("{:.2f}".format(self.price))
+
+    def getNumberOfTickets(self):
+        return self.numberOfTickets
 
     def getDescription(self):
         return "[{}] {}".format(self.movieName, self.ticketType)

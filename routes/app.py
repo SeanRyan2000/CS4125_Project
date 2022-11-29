@@ -11,7 +11,7 @@ if rootDir not in sys.path: # add parent dir to paths
 
 from ..model.Basket.Basket import Basket, BasketEmpty
 from ..model.Basket.Concessions.AddOns import AddIceCream, AddHotDog, AddDrink, AddSweets
-from ..model.Basket.Concessions.Popcorn import Popcorn, LargePopcorn
+from ..model.Basket.Concessions.Popcorn import Popcorn, LargePopcorn, RegularPopcorn
 from ..model.Basket.Ticket import Ticket
 from ..model.Authentication.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual, registerNewUser, checkIfEmailExists
 from ..model.Authentication.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
@@ -52,7 +52,7 @@ def movie():
 
 @app.route('/buyTicketScreen', methods=['POST'])
 def buyTicketScreen():
-
+    myBasket.clearBasket()
     movie = request.form.to_dict().get('movieName')
     # add movie name to session so that it can be used in the buyTicket function
     session['movie'] = movie
@@ -70,7 +70,6 @@ def buyTicket():
     ticket.numberOfTickets = int(request.form.get('tickets'))
     ticket.price = ticket.getPrice() * int(request.form.get('tickets'))
     print('ticket price ', ticket.price)
-    Ticket.getPrice(ticket)
     myBasket.addItem(ticket)
 
 
@@ -88,13 +87,20 @@ def addOns():
 @app.route('/buyAddOns', methods=['POST'])
 def buyAddOns():
 
-    popcorn = concessionFactory.createPopcorn(request.form.get('size'))
-    if isinstance(popcorn, LargePopcorn):
-        popcorn = AddIceCream(AddHotDog(AddDrink(popcorn)))
-    else :
-        popcorn = AddSweets(AddDrink(popcorn))
+    largePopcorn = LargePopcorn(request.form.get('large'))
+    regularPopcorn = RegularPopcorn(request.form.get('regular'))
+    if int(largePopcorn.getQuantity()) > 0:
+        largePopcorn = AddIceCream(AddHotDog(AddDrink(largePopcorn)))
+        myBasket.addItem(largePopcorn)
 
-    myBasket.addItem(popcorn)
+
+    if int(regularPopcorn.getQuantity()) > 0:
+        regularPopcorn = AddSweets(AddDrink(regularPopcorn))
+        myBasket.addItem(regularPopcorn)
+
+
+
+
     # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\nBASKET: ', myBasket.viewBasket())
     string = myBasket.formattedString()
     print('SRTINTG', string)
