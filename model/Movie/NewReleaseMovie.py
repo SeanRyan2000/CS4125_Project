@@ -1,4 +1,4 @@
-import model.Movie.Movie as Movie
+import CS4125_Project.model.Movie.Movie as Movie
 
 class NewReleaseMovie(Movie.Movie):
 

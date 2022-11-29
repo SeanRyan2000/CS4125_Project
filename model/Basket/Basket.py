@@ -7,7 +7,7 @@ import pandas as pd
 
 from flask import session
 
-PURCHASES_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/orderHistory.csv'
+PURCHASES_CSV_PATH_STRING = str(os.path.abspath('../..')) + '/csv_files/orderHistory.csv'
 
 """
 Basket Context Class
@@ -21,6 +21,9 @@ class Basket:
         self.setBasket(basketState)
         self._items = {}
         self.orderID = str(uuid.uuid1())[0:6]
+
+    def __call__(self):
+        return self._basketState
 
     ##State Methods
     def setBasket(self, basketState: BasketState):
@@ -132,6 +135,9 @@ class BasketEmpty(BasketState):
 
     def formattedString(self) -> str:
         return ("There are no items in your basket")
+
+    def __call__(self):
+        return self.basket
 
 
 """

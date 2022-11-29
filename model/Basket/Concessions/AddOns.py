@@ -1,7 +1,7 @@
 import six
 from abc import ABCMeta
 
-from model.Basket.Concessions.Popcorn import Popcorn
+from CS4125_Project.model.Basket.Concessions.Popcorn import Popcorn
 
 
 # from Concessions.Popcorn import Popcorn

@@ -29,3 +29,6 @@ class Ticket:
             self.price = self.price * 1.2
 
         return self.price
+
+    def __call__(self):
+        return self
