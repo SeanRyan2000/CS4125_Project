@@ -27,7 +27,7 @@ class AddDrink(AddOns):
         return self.concession.getDescription() + " + Drink"
 
     def getPrice(self):
-        return self.concession.getPrice() + 3
+        return int(self.concession.getPrice()) + 3
 
 
 class AddSweets(AddOns):
@@ -49,7 +49,7 @@ class AddIceCream(AddOns):
         return self.concession.getDescription() + " + Ice Cream"
 
     def getPrice(self):
-        return self.concession.getPrice() + 4
+        return int(self.concession.getPrice()) + 4
 
 
 class AddHotDog(AddOns):
@@ -60,4 +60,4 @@ class AddHotDog(AddOns):
         return self.concession.getDescription() + " + Hot Dog"
 
     def getPrice(self):
-        return self.concession.getPrice() + 5
+        return int(self.concession.getPrice()) + 5
