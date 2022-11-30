@@ -4,3 +4,4 @@ localVars.py
 __pycache__
 csv_files/*
 /model/Basket/Movie/
+.env
