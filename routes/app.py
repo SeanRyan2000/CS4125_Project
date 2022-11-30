@@ -1,8 +1,10 @@
-from flask import Flask, render_template, redirect, request, url_for, session
+from flask import Flask, render_template, redirect, request, url_for, session, jsonify
 import os.path
 import pandas as pd
 import csv
 import os, sys
+import stripe
+from decouple import config
 
 currDir = os.path.dirname(os.path.realpath(__file__))
 rootDir = os.path.abspath(os.path.join(currDir, '..'))
@@ -13,6 +15,7 @@ from ..model.Basket.Basket import Basket, BasketEmpty
 from ..model.Basket.Concessions.AddOns import AddIceCream, AddHotDog, AddDrink, AddSweets
 from ..model.Basket.Concessions.Popcorn import Popcorn, LargePopcorn, RegularPopcorn
 from ..model.Basket.Ticket import Ticket
+from ..model.Basket.Stripe_Basket import *
 from ..model.Authentication.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual, registerNewUser, checkIfEmailExists
 from ..model.Authentication.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
 from ..model.Movie import MovieFactory
@@ -27,6 +30,13 @@ TEMPLATES_PATH_STRING = str(os.path.abspath('..')) + '/templates'
 STATIC_PATH_STRING = str(os.path.abspath('..')) + '/static'
 MOVIE_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/movies.csv'
 
+stripe_keys = {
+    "secret_key": config("SECRET_KEY"),
+    "publishable_key": config("PUBLISHABLE_KEY"),
+    "endpoint_key": config("ENDPOINT_SECRET")
+}
+stripe.api_key = stripe_keys["secret_key"]
+
 app = Flask(__name__,
             template_folder=TEMPLATES_PATH_STRING,
             static_folder=STATIC_PATH_STRING
@@ -34,6 +44,8 @@ app = Flask(__name__,
 app.secret_key = 'secret key ahh'
 
 myBasket = Basket(BasketEmpty())
+line_items = []
+stripe_basket = Stripe_Basket(line_items)
 
 def __init__(self, name):
     self.app = Flask(name)
@@ -57,7 +69,7 @@ def buyTicketScreen():
     # add movie name to session so that it can be used in the buyTicket function
     session['movie'] = movie
     print(session['movie'])
-    return render_template('buyTicketScreen.html', moivieName=movie)
+    return render_template('buyTicketScreen.html', movieName=movie)
 
 @app.route('/buyTicket', methods=['POST'])
 def buyTicket():
@@ -70,11 +82,14 @@ def buyTicket():
     ticket.numberOfTickets = int(request.form.get('tickets'))
     ticket.price = ticket.getPrice() * int(request.form.get('tickets'))
     print('ticket price ', ticket.price)
-    myBasket.addItem(ticket)
-
-
+    if ticket.movieType == "childrens" :
+              stripe_basket.addToStripe('CHILDRENS-' + ticket.ticketType.upper(), ticket.numberOfTickets)
+    elif ticket.movieType == "new" :
+             stripe_basket.addToStripe('NEW-' + ticket.ticketType.upper(), ticket.numberOfTickets)
+    else:
+             stripe_basket.addToStripe(ticket.ticketType.upper(), ticket.numberOfTickets)
     # use ticket in addOns function
-
+    myBasket.addItem(ticket)
     session['ticket'] = ticket.__dict__ # to access the ticket object in addOns page
     return render_template('basket.html', ticket=ticket)
 
@@ -90,24 +105,33 @@ def buyAddOns():
     largePopcorn = LargePopcorn(request.form.get('large'))
     regularPopcorn = RegularPopcorn(request.form.get('regular'))
     if int(largePopcorn.getQuantity()) > 0:
+        stripe_basket.addToStripe('ICECREAM', largePopcorn.getQuantity())
+        stripe_basket.addToStripe('HOTDOG', largePopcorn.getQuantity())
+        stripe_basket.addToStripe('DRINK', largePopcorn.getQuantity())
+        stripe_basket.addToStripe('LARGE-POPCORN', largePopcorn.getQuantity())
         largePopcorn = AddIceCream(AddHotDog(AddDrink(largePopcorn)))
         myBasket.addItem(largePopcorn)
 
-
     if int(regularPopcorn.getQuantity()) > 0:
+        stripe_basket.addToStripe('SWEETS', regularPopcorn.getQuantity())
+        stripe_basket.addToStripe('DRINK', regularPopcorn.getQuantity())
+        stripe_basket.addToStripe('REGULAR-POPCORN', regularPopcorn.getQuantity())
         regularPopcorn = AddSweets(AddDrink(regularPopcorn))
         myBasket.addItem(regularPopcorn)
-
-
 
 
     # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\nBASKET: ', myBasket.viewBasket())
     string = myBasket.formattedString()
     print('SRTINTG', string)
-    return session.get('formattedString')
+    #return session.get('formattedString')
     # return myBasket.viewBasket()
-    # return render_template('final_basket.html', basket=myBasket)
+    return render_template('checkout.html')
+    #return render_template('final_basket.html', basket=myBasket)
 
+@app.route("/config")
+def get_publishable_key():
+    stripe_config = {"publicKey": stripe_keys["publishable_key"]}
+    return jsonify(stripe_config)
 
 @app.route('/')
 def home():
@@ -170,6 +194,36 @@ def registerUser():
 def loginSuccessfully():
 
     return render_template('base.html')
+
+@app.route("/success")
+def success():
+    return render_template("success.html")
+
+
+@app.route("/cancelled")
+def cancelled():
+    return render_template("cancelled.html")
+
+
+@app.route("/create-checkout-session", methods=['GET'])
+def create_checkout_session():
+    domain_url = "http://127.0.0.1:5000/"
+    stripe.api_key = stripe_keys["secret_key"]    
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=domain_url + "cancelled",
+            payment_method_types=["card"],
+            mode="payment",
+            line_items = stripe_basket.getBasket()
+        )
+        return jsonify({"sessionId": checkout_session["id"]})
+       
+    except Exception as e:
+        print(line_items)
+        return jsonify(error=str(e)), 403
+
 
 @app.errorhandler(404)
 def not_found(e):
