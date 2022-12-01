@@ -28,17 +28,29 @@ def verifyEmailAndPassword(email, password):
     else:
         return False
 
+def checkAdminLogin(email, password):
+
+    if email == 'admin@admin.com' and password == 'admin123':
+        signInUser('admin@admin.com', True)
+        session['admin'] = True
+        return True
+
+    return False
+
 
 def getUserID(email):
 
-    df = pandas.read_csv(CSV_PATH_STRING)
-    eMail = df['EMAIL'].tolist()
-    index = eMail.index(email)
-    return df.at[index, 'USER_ID']
+    if email is not'admin@admin.com':
+        df = pandas.read_csv(CSV_PATH_STRING)
+        eMail = df['EMAIL'].tolist()
+        index = eMail.index(email)
+        return df.at[index, 'USER_ID']
+
+    return 'ADMIN'
 
 
-def signInUser(email):
+def signInUser(email, isAdmin):
 
-    current_user = Customer.User(getUserID(email), email, False)
+    current_user = Customer.User(getUserID(email), email, isAdmin)
     session['user'] = current_user.__dict__
     return current_user

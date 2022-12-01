@@ -18,7 +18,7 @@ from ..model.Basket.Ticket import Ticket
 from ..model.Basket.Stripe_Basket import *
 from ..model.Authentication.Register import validatePasswordStrength, emailValidator, ensurePasswordsAreEqual, \
     registerNewUser, checkIfEmailExists
-from ..model.Authentication.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser
+from ..model.Authentication.SignIn import verifyEmailAndPassword, checkEmailExists, signInUser, checkAdminLogin
 from ..model.Movie import MovieFactory
 from ..model.Basket import TicketFactory
 from ..model.Basket.Concessions.ConcessionFactory import ConcessionFactory
@@ -168,6 +168,9 @@ def signin():
 
 @app.route('/signInUser', methods=['POST'])
 def validateSignIn():
+
+    if checkAdminLogin(request.form.to_dict().get('email'), request.form.to_dict().get('password')):
+        return render_template('admin_dashboard.html')
     if not checkEmailExists((request.form.to_dict().get('email'))):
         error = 'Email doesn\'t exist'
         return render_template('signin.html', error=error)
@@ -183,7 +186,7 @@ def validateSignIn():
 
 @app.route('/logout')
 def logout():
-    session['signin'] = False
+    session.clear()
     return render_template('home.html')
 
 
@@ -274,15 +277,23 @@ def internal_error(e):
 
 @app.route('/admin')
 def admin():
-    return render_template('admin_dashboard.html')
+
+    if session.get('admin') == True:
+        return render_template('admin_dashboard.html')
+
+    return redirect('signin')
 
 
 @app.route('/admin/add_movie', methods=['POST'])
 def add_movie():
-    if len(request.form.to_dict()) != 0:
-        movieToBeAdded = movieFactory.createMovie(request.form.to_dict())
-        addMovieToCSV(movieToBeAdded)
-    else:
-        print('error')
 
-    return redirect('/admin')
+    if session.get('admin') == True:
+        if len(request.form.to_dict()) != 0:
+            movieToBeAdded = movieFactory.createMovie(request.form.to_dict())
+            addMovieToCSV(movieToBeAdded)
+        else:
+            print('error')
+
+        return redirect('/admin')
+
+    return redirect('signin')
