@@ -7,7 +7,7 @@ import pandas as pd
 
 from flask import session
 
-PURCHASES_CSV_PATH_STRING = str(os.path.abspath('../..')) + '/csv_files/orderHistory.csv'
+PURCHASES_CSV_PATH_STRING = str(os.path.abspath('..')) + '/csv_files/orderHistory.csv'
 
 """
 Basket Context Class

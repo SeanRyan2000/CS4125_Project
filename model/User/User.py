@@ -3,9 +3,8 @@ from abc import ABC, abstractmethod
 import csv
 
 class User(abc.ABC):
-    def __init__(self, email, password, ID_number, isAdmin):
+    def __init__(self, email, ID_number, isAdmin):
         self.email = email
-        self.password = password
         self.ID_number = ID_number
         self.isAdmin = isAdmin
     
