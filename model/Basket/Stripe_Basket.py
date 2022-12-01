@@ -1,7 +1,7 @@
 product_catalogue = {
     'NEW-ADULT' : 1440,
     'NEW-STUDENT' : 1200,
-    'NEW-KIDS' : 960,
+    'NEW-CHILD' : 960,
     'CHILDRENS-ADULT' : 960,
     'CHILDRENS-STUDENT' : 800,
     'CHILDRENS-CHILD' : 640,

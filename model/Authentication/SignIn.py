@@ -1,6 +1,7 @@
 import os
 
 import pandas
+from flask import session
 from model.User import Customer
 import bcrypt
 
@@ -22,7 +23,7 @@ def verifyEmailAndPassword(email, password):
     pwd = df.at[index, 'PASSWORD']
     # checking encrypted password in CSV against entered password
     if bcrypt.checkpw(password.encode('utf-8'), pwd.encode('utf-8')):
-        signInUser(email, password)
+        signInUser(email)
         return True
     else:
         return False
@@ -36,7 +37,8 @@ def getUserID(email):
     return df.at[index, 'USER_ID']
 
 
-def signInUser(email, password):
+def signInUser(email):
 
-    current_user = Customer.User(getUserID(email), email, password, False)
+    current_user = Customer.User(getUserID(email), email, False)
+    session['user'] = current_user.__dict__
     return current_user
