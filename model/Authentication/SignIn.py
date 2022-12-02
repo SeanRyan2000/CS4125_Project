@@ -23,7 +23,7 @@ def verifyEmailAndPassword(email, password):
     pwd = df.at[index, 'PASSWORD']
     # checking encrypted password in CSV against entered password
     if bcrypt.checkpw(password.encode('utf-8'), pwd.encode('utf-8')):
-        signInUser(email)
+        signInUser(email, False)
         return True
     else:
         return False
