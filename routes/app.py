@@ -170,6 +170,7 @@ def signin():
 def validateSignIn():
 
     if checkAdminLogin(request.form.to_dict().get('email'), request.form.to_dict().get('password')):
+
         return render_template('admin_dashboard.html')
     if not checkEmailExists((request.form.to_dict().get('email'))):
         error = 'Email doesn\'t exist'
@@ -178,7 +179,7 @@ def validateSignIn():
         error = 'Password incorrect'
         return render_template('signin.html', error=error)
 
-    signInUser(request.form.to_dict().get('email'))
+    signInUser(request.form.to_dict().get('email'), False)
     session['signin'] = True
     print(session['signin'])
     return render_template('home.html', data=session['signin'])
