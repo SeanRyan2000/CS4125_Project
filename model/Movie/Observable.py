@@ -16,3 +16,5 @@ class Observable():
     def notify_user(self):
         for email in self.userEmail:
             print("Email sent to: " + email)
+
+

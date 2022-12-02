@@ -71,4 +71,3 @@ def checkIfEmailExists(email):
     # returns true if email already exists in CSV file and false if it doesn't exist
     return email in df['EMAIL'].values
 
-

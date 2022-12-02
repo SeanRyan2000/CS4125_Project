@@ -37,3 +37,21 @@ class MovieFactory:
                     movie = StandardMovie.StandardMovie(title[0], title[1], title[3])
 
         return movie
+
+class MovieFactoryTest:
+    
+    def testCreateMovie(self):
+        movieFactory = MovieFactory()
+        movie = movieFactory.createMovie({'title': 'test', 'movie_length': 120, 'tickets': 100, 'type': 'NewReleaseMovie'})
+        assert movie.getMovieName() == 'test'
+        assert movie.getMovieLength() == 120
+        assert movie.getTicketsLeft() == 100
+        assert movie.getMovieType() == 'new'
+
+    def testCreateMovieFromCSV(self):
+        movieFactory = MovieFactory()
+        movie = movieFactory.createMovieFromCSV('test')
+        assert movie.getMovieName() == 'test'
+        assert movie.getMovieLength() == 120
+        assert movie.getTicketsLeft() == 100
+        assert movie.getMovieType() == 'new'
