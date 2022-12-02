@@ -1,0 +1,18 @@
+orderID,userID,item,quantity,price,date
+6a3567,69124,[movieName1] 1,1,12,Nov-29-2022
+6a3567,69124,[movieName2] 1,2,12,Nov-29-2022
+6a3567,69124,[movieName3] 1,1,12,Nov-29-2022
+6a3567,69124,Regular Popcorn + Drink + Ice Cream,2,13,Nov-29-2022
+6a3567,69124,Large Popcorn + Sweets + Hot Dog,1,15,Nov-29-2022
+360c45,56811,[LORD OF THE RINGS] Child,1,8,Dec-01-2022
+360c45,56811,Regular Popcorn + Drink + Sweets,1,11,Dec-01-2022
+c8f124,56811,[AVATAR 2] Child,1,9.6,Dec-01-2022
+c8f124,56811,Regular Popcorn + Drink + Sweets,1,23,Dec-01-2022
+68e05f,56811,[THE DARK KNIGHT] Child,1,8,Dec-01-2022
+68e05f,56811,Large Popcorn + Drink + Hot Dog + Ice Cream,1,36,Dec-01-2022
+68e05f,56811,Regular Popcorn + Drink + Sweets,1,11,Dec-01-2022
+19124b,69124,[movieName1] 1,1,12,Dec-02-2022
+19124b,69124,[movieName2] 1,2,12,Dec-02-2022
+19124b,69124,[movieName3] 1,1,12,Dec-02-2022
+19124b,69124,Regular Popcorn + Drink + Ice Cream,2,13,Dec-02-2022
+19124b,69124,Large Popcorn + Sweets + Hot Dog,1,15,Dec-02-2022
