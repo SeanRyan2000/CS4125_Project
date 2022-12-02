@@ -29,8 +29,8 @@ ticket2 = tick.Ticket('movieName2', "student", 'new', 120, 1, 'Adult')
 ticket3 = tick.Ticket('movieName3', "adult", 'new', 120, 1, 'Adult')
 
 ##Concessions##
-popcorn1 = RegularPopcorn()
-popcorn2 = LargePopcorn()
+popcorn1 = RegularPopcorn(1)
+popcorn2 = LargePopcorn(1)
 popcorn1 = AddIceCream(AddDrink(popcorn1))
 popcorn2 = AddHotDog(AddSweets(popcorn2))
 
@@ -47,3 +47,17 @@ myBasket.addItem(popcorn2)
 ##View Baseket##
 myBasket.viewBasket()
 myBasket.recordPurchase(69124)
+
+# check if purchase was recorded inside orderHistory.csv
+with open('orderHistory.csv', 'r') as f:
+    reader = csv.reader(f)
+    orderHistory = list(reader)
+    print(orderHistory)
+    assert orderHistory[0][0] == '69124'
+    assert orderHistory[0][1] == 'Where the Crawdads Sing'
+    assert orderHistory[0][2] == 'kids'
+    assert orderHistory[0][3] == 'new'
+    assert orderHistory[0][4] == '120'
+    assert orderHistory[0][5] == '1'
+    assert orderHistory[0][6] == 'Adult'
+
